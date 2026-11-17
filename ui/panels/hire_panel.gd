@@ -21,7 +21,7 @@ func build() -> void:
 		var blurb := ""
 		match c.role:
 			Character.CHEF:
-				blurb = "Cooks in parallel at a free station. Higher skill = better dishes."
+				blurb = "Cooks one dish at a time — more chefs, more dishes at once. Higher skill = better dishes."
 			Character.SERVER:
 				blurb = "Delivers dishes so chefs can keep cooking."
 			_:

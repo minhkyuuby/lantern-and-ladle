@@ -5,7 +5,7 @@ extends Resource
 @export var display_name: String = ""
 @export var icon: String = ""
 @export_multiline var description: String = ""
-## seats | grill | pot | oven | freshness | traffic | cook_speed | roster | party | power | permit
+## seats | freshness | traffic | cook_speed | roster | party | power | permit
 @export var effect: String = ""
 ## Amount added per level.
 @export var amount: float = 1.0

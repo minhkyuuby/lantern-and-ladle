@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bcclysni0c3hb"
-path="res://.godot/imported/pot_idle.png-f8e30a36a3ac2792fe295419aeeed65d.ctex"
+uid="uid://dumncqcw2san1"
+path="res://.godot/imported/adventurer_back.png-5a3d20ed8510f4d75d3f3871b789b39c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/stations/pot_idle.png"
-dest_files=["res://.godot/imported/pot_idle.png-f8e30a36a3ac2792fe295419aeeed65d.ctex"]
+source_file="res://assets/sprites/customers/adventurer_back.png"
+dest_files=["res://.godot/imported/adventurer_back.png-5a3d20ed8510f4d75d3f3871b789b39c.ctex"]
 
 [params]
 

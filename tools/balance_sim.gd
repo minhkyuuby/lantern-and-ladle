@@ -124,7 +124,7 @@ func _bot() -> void:
 	var servers := s.by_role(Character.SERVER).size()
 	var chefs := s.by_role(Character.CHEF).size()
 	# Biome gates first: save up for the permit and the oven as soon as they're available.
-	for gate in ["orchard_permit", "clay_oven"]:
+	for gate in ["orchard_permit"]:
 		var gu := sim.db.upgrade(gate)
 		if s.upgrade_level(gate) == 0 and gu.requires_boss in s.bosses_beaten:
 			if sim.progression.upgrade_block_reason(gu) == "" and sim.progression.upgrade_cost(gu) <= spare:

@@ -8,7 +8,6 @@ id = "boar_skewer"
 display_name = "Honey-Glazed Boar"
 icon = "🍡"
 ingredients = {"boar": 1, "honey": 1}
-station = "grill"
 cook_time = 8.0
 price = 44
 chef_level = 5

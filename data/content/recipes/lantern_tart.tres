@@ -8,7 +8,6 @@ id = "lantern_tart"
 display_name = "Lantern-Fruit Tart"
 icon = "🥧"
 ingredients = {"lantern_fruit": 2, "honey": 1}
-station = "oven"
 cook_time = 9.0
 price = 64
 chef_level = 6

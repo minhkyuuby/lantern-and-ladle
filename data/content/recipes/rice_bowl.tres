@@ -8,7 +8,6 @@ id = "rice_bowl"
 display_name = "Plain Rice Bowl"
 icon = "🍚"
 ingredients = {"rice": 1}
-station = "pot"
 cook_time = 4.0
 price = 4
 chef_level = 1

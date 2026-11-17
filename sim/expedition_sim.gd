@@ -76,7 +76,7 @@ func target_floor(p: Party) -> int:
 func pantry_needs() -> Dictionary:
 	var needs := {}
 	for r in sim.db.recipe_list():
-		if not sim.is_on_menu(r) or sim.station_count(r.station) <= 0:
+		if not sim.is_on_menu(r):
 			continue
 		for id in r.ingredients:
 			var def: IngredientDef = sim.db.ingredients.get(id)

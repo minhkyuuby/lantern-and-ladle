@@ -6,8 +6,6 @@ extends Resource
 @export var icon: String = ""
 ## ingredient_id -> count
 @export var ingredients: Dictionary = {}
-## "grill" or "pot"
-@export var station: String = "grill"
 @export var cook_time: float = 5.0
 @export var price: int = 10
 @export var chef_level: int = 1

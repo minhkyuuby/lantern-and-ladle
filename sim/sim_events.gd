@@ -28,7 +28,7 @@ signal job_started(job, chef)
 signal job_ready(job, chef)
 signal job_cancelled(job, worker_id: int)
 signal delivery_started(job, worker)
-signal station_boosted(index: int)
+signal chef_boosted(chef_id: int)
 
 # Progression
 signal character_leveled(character)

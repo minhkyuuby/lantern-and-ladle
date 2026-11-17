@@ -216,16 +216,6 @@ func seats() -> int:
 	return mini(b.max_seats, b.base_seats + int(upgrade_amount("seats")))
 
 
-func station_count(type: String) -> int:
-	match type:
-		"grill":
-			return b.base_grills + int(upgrade_amount("grill"))
-		"pot":
-			return b.base_pots + int(upgrade_amount("pot"))
-		"oven":
-			return b.base_ovens + int(upgrade_amount("oven"))
-	return 0
-
 
 func fresh_days() -> int:
 	return b.fresh_days + int(upgrade_amount("freshness"))
@@ -257,7 +247,7 @@ func is_on_menu(r: RecipeDef) -> bool:
 
 
 func can_cook_now(r: RecipeDef) -> bool:
-	return is_on_menu(r) and station_count(r.station) > 0 and state.inventory.has_all(r.ingredients)
+	return is_on_menu(r) and state.inventory.has_all(r.ingredients)
 
 
 # --- Helpers ---------------------------------------------------------------

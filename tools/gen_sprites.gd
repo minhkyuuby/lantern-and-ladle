@@ -117,9 +117,19 @@ class Canvas:
 
 var _all: Array = []  # [group, Image] for the preview sheet
 
+var CUSTOMERS := {
+	"townsfolk": {"skin": SKIN, "hair": "short", "hair_c": Color("8a5a3c"), "outfit": Color("7d9cd0")},
+	"adventurer": {"skin": SKIN, "hair": "none", "hat": "hood", "hat_c": Color("6fa068"), "ears": true,
+		"outfit": Color("8cb87a")},
+	"noble": {"skin": SKIN, "hair": "long", "hair_c": Color("f2d88a"), "hat": "crown", "outfit": Color("9a74c0"),
+		"collar": true, "belt": false},
+	"merchant": {"skin": SKIN_TAN, "hair": "short", "hair_c": Color("4a3436"), "hat": "wide",
+		"hat_c": Color("8a6244"), "outfit": Color("d8b25a"), "backpack": true},
+}
+
 
 func _init() -> void:
-	for dir in ["crew", "customers", "stations", "ingredients", "portraits"]:
+	for dir in ["crew", "customers", "ingredients", "portraits"]:
 		DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(ROOT + dir))
 
 	# Crew
@@ -135,19 +145,14 @@ func _init() -> void:
 		"outfit": Color("a8744c"), "sword": true}))
 
 	# Customers
-	_save("customers", "townsfolk", _person({"skin": SKIN, "hair": "short", "hair_c": Color("8a5a3c"),
-		"outfit": Color("7d9cd0")}))
-	_save("customers", "adventurer", _person({"skin": SKIN, "hair": "none", "hat": "hood", "hat_c": Color("6fa068"),
-		"ears": true, "outfit": Color("8cb87a")}))
-	_save("customers", "noble", _person({"skin": SKIN, "hair": "long", "hair_c": Color("f2d88a"), "hat": "crown",
-		"outfit": Color("9a74c0"), "collar": true, "belt": false}))
-	_save("customers", "merchant", _person({"skin": SKIN_TAN, "hair": "short", "hair_c": Color("4a3436"),
-		"hat": "wide", "hat_c": Color("8a6244"), "outfit": Color("d8b25a"), "backpack": true}))
+	for id in CUSTOMERS:
+		_save("customers", id, _person(CUSTOMERS[id]))
 
-	# Stations (idle + cooking)
-	for kind in ["grill", "pot", "oven"]:
-		_save("stations", kind + "_idle", _station(kind, false))
-		_save("stations", kind + "_cook", _station(kind, true))
+	# Customers seen from behind (they sit facing the counter)
+	for id in CUSTOMERS:
+		var back: Dictionary = CUSTOMERS[id].duplicate()
+		back["back"] = true
+		_save("customers", id + "_back", _person(back))
 
 	# Ingredients
 	for id in ["mushroom", "rat_meat", "glowroot", "slime", "blossom", "honey"]:
@@ -200,7 +205,8 @@ func _person(s: Dictionary) -> Canvas:
 	var outfit: Color = s.get("outfit", Color("7d9cd0"))
 	var osh := _shade(outfit)
 
-	if s.get("backpack", false):
+	var back: bool = s.get("back", false)
+	if s.get("backpack", false) and not back:
 		cv.rrect(12, 12, 3, 6, 1, WOOD)
 		cv.rect(12, 13, 3, 1, WOOD_SH)
 
@@ -217,6 +223,10 @@ func _person(s: Dictionary) -> Canvas:
 	cv.rrect(12, 13, 2, 5, 1, osh)
 	cv.px(2, 17, skin)
 	cv.px(13, 17, skin)
+	if back:
+		s = s.duplicate()
+		for k in ["shirt", "apron", "collar", "bowtie", "compass"]:
+			s.erase(k)
 	if s.has("shirt"):
 		cv.rect(6, 12, 4, 6, s["shirt"])
 	if s.get("belt", true):
@@ -246,20 +256,30 @@ func _person(s: Dictionary) -> Canvas:
 	cv.rrect(3, 1, 10, 11, 2, skin)
 	cv.rect(12, 4, 1, 5, _shade(skin))
 	cv.rect(5, 11, 6, 1, _shade(skin))
-	cv.px(5, 6, EYE)
-	cv.px(5, 7, EYE)
-	cv.px(10, 6, EYE)
-	cv.px(10, 7, EYE)
-	cv.rect(3, 8, 2, 1, BLUSH)
-	cv.rect(11, 8, 2, 1, BLUSH)
-	cv.px(7, 9, MOUTH)
-	cv.px(8, 9, MOUTH)
+	if back:
+		var hide: Color = s.get("hair_c", skin) if s.get("hair", "short") != "none" else s.get("hat_c", skin)
+		cv.rrect(3, 1, 10, 9, 2, hide)
+		cv.rect(4, 9, 8, 1, _shade(hide))
+		cv.rect(5, 10, 6, 2, _shade(skin))
+		if s.get("backpack", false):
+			cv.rrect(4, 12, 8, 6, 2, WOOD)
+			cv.rect(5, 13, 6, 1, WOOD_SH)
+			cv.rect(7, 15, 2, 1, GOLD_SH)
+	else:
+		cv.px(5, 6, EYE)
+		cv.px(5, 7, EYE)
+		cv.px(10, 6, EYE)
+		cv.px(10, 7, EYE)
+		cv.rect(3, 8, 2, 1, BLUSH)
+		cv.rect(11, 8, 2, 1, BLUSH)
+		cv.px(7, 9, MOUTH)
+		cv.px(8, 9, MOUTH)
 	if s.get("ears", false):
 		cv.px(2, 6, skin)
 		cv.px(1, 5, skin)
 		cv.px(13, 6, skin)
 		cv.px(14, 5, skin)
-	if s.has("beard"):
+	if s.has("beard") and not back:
 		var b: Color = s["beard"]
 		cv.rrect(4, 8, 8, 4, 1, b)
 		cv.rect(5, 8, 6, 1, _shade(b))
@@ -573,72 +593,6 @@ func _portrait_moth(masked: bool, ex: String) -> Canvas:
 		cv.rect(9, 18, 3, 1, BLUSH)
 		cv.rect(20, 18, 3, 1, BLUSH)
 	cv.outline(INK)
-	return cv
-
-
-# --- Stations (32x20): copper and terracotta ------------------------------------------
-
-func _station(kind: String, cooking: bool) -> Canvas:
-	var cv := Canvas.new(32, 20)
-	match kind:
-		"grill":
-			cv.rect(5, 14, 2, 6, WOOD_SH)
-			cv.rect(25, 14, 2, 6, WOOD_SH)
-			cv.rect(4, 17, 24, 1, WOOD)
-			cv.rrect(2, 7, 28, 8, 3, COPPER)
-			cv.rect(4, 8, 24, 2, _light(COPPER))
-			cv.rect(3, 13, 26, 2, COPPER_SH)
-			for x in [8, 15, 22]:
-				cv.ellipse(x + 1, 11, 1.5, 1.2, Color("8a4c32"))
-			cv.rrect(1, 5, 30, 3, 1, Color("5a3a2e"))
-			for x in range(2, 30, 3):
-				cv.px(x, 5, Color("a87a5e"))
-			for x in range(3, 29, 4):
-				cv.px(x, 6, Color("ffa860") if cooking else Color("8a4a36"))
-		"pot":
-			cv.rrect(6, 15, 20, 5, 1, Color("a8644a"))
-			for x in range(7, 25, 4):
-				cv.rect(x, 17, 3, 1, Color("8a4e3a"))
-			cv.rrect(13, 16, 6, 3, 1, Color("ffb060") if cooking else Color("4a2e28"))
-			cv.ellipse(16, 10.5, 11.5, 6, COPPER)
-			cv.ellipse(12, 9, 3, 2.5, _light(COPPER))
-			cv.rect(20, 11, 6, 3, COPPER_SH)
-			cv.rrect(4, 4, 24, 3, 1, Color("dca07a"))
-			cv.rrect(1, 8, 4, 3, 1, COPPER_SH)
-			cv.rrect(27, 8, 4, 3, 1, COPPER_SH)
-			cv.rect(6, 4, 20, 1, Color("b5d68a") if cooking else Color("7a5040"))
-		"oven":
-			cv.rect(1, 18, 30, 2, Color("8a7466"))
-			cv.rrect(21, 0, 5, 7, 1, Color("b06a48"))
-			cv.ellipse(16, 13, 14.5, 9.5, Color("d98a5e"))
-			cv.rect(2, 13, 28, 5, Color("d98a5e"))
-			cv.ellipse(10, 8, 4, 2.5, Color("eaa47a"))
-			for y in [9, 13, 16]:
-				for x in range(4 + (y % 6), 28, 7):
-					cv.rect(x, y, 3, 1, Color("bc6e48"))
-			var mouth := Color("ffb060") if cooking else Color("4a2e28")
-			cv.ellipse(16, 14, 6, 4, mouth)
-			cv.rect(10, 14, 12, 4, mouth)
-			if cooking:
-				cv.rrect(12, 15, 8, 3, 1, Color("ffe08a"))
-			cv.px(28, 17, Color("7ab070"))
-			cv.px(29, 16, Color("7ab070"))
-			cv.px(29, 17, Color("5a9050"))
-	cv.outline(INK)
-	if cooking:
-		var steam := Color(1, 0.97, 0.92, 0.8)
-		match kind:
-			"grill":
-				for p in [Vector2i(5, 3), Vector2i(6, 2), Vector2i(12, 3), Vector2i(13, 1), Vector2i(20, 3), Vector2i(21, 2), Vector2i(27, 3)]:
-					cv.px(p.x, p.y, Color("ffbc6a"))
-				for p in [Vector2i(6, 4), Vector2i(13, 4), Vector2i(21, 4)]:
-					cv.px(p.x, p.y, Color("ffe7a0"))
-			"pot":
-				for p in [Vector2i(10, 2), Vector2i(11, 1), Vector2i(10, -1), Vector2i(16, 2), Vector2i(17, 0), Vector2i(22, 2), Vector2i(21, 0)]:
-					cv.px(p.x, p.y, steam)
-			"oven":
-				for p in [Vector2i(23, -1), Vector2i(24, -2)]:
-					cv.px(p.x, p.y, steam)
 	return cv
 
 

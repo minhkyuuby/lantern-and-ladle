@@ -8,7 +8,6 @@ id = "mushroom_skewer"
 display_name = "Mushroom Skewer"
 icon = "🍢"
 ingredients = {"mushroom": 2}
-station = "grill"
 cook_time = 5.0
 price = 9
 chef_level = 1

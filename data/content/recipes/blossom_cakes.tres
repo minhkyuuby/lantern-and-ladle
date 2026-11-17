@@ -8,7 +8,6 @@ id = "blossom_cakes"
 display_name = "Blossom Honey Cakes"
 icon = "🧁"
 ingredients = {"blossom": 1, "honey": 1, "rice": 1}
-station = "oven"
 cook_time = 6.0
 price = 32
 chef_level = 5

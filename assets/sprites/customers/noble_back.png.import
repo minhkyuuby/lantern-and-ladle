@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bukhhvtuixn55"
-path="res://.godot/imported/pot_cook.png-71fc17b26c795284322bd4fc7cc665c1.ctex"
+uid="uid://dj1d3e7asr8vf"
+path="res://.godot/imported/noble_back.png-ccf3d2e8447c240b14ca6be53e551e2d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/stations/pot_cook.png"
-dest_files=["res://.godot/imported/pot_cook.png-71fc17b26c795284322bd4fc7cc665c1.ctex"]
+source_file="res://assets/sprites/customers/noble_back.png"
+dest_files=["res://.godot/imported/noble_back.png-ccf3d2e8447c240b14ca6be53e551e2d.ctex"]
 
 [params]
 

@@ -1,8 +1,7 @@
 class_name RestaurantSim
 extends RefCounted
-## Night service: customers queue, sit, order, chefs cook at stations, servers deliver, customers pay.
-
-const STATION_TYPES := ["grill", "pot", "oven"]
+## Night service: customers queue, sit, order, chefs cook, servers deliver, customers pay.
+## Every chef cooks one dish at a time, any recipe — more chefs means more dishes at once.
 
 
 class Customer:
@@ -30,18 +29,9 @@ class Job:
 	## queued | cooking | ready | delivering
 	var state: String = "queued"
 	var progress: float = 0.0
-	var station: int = -1
 	var worker: int = -1
 	var deliver_left: float = 0.0
 	var deliver_total: float = 0.0
-
-
-class Station:
-	extends RefCounted
-	var type: String = "grill"
-	var job: Job = null
-	var boost: float = 0.0
-	var cooldown: float = 0.0
 
 
 var sim: Sim
@@ -50,7 +40,8 @@ var customers: Array[Customer] = []
 var queue: Array[Customer] = []
 var seats: Array = []  # Customer or null
 var jobs: Array[Job] = []
-var stations: Array[Station] = []
+## chef id -> [boost seconds left, cooldown seconds left] (player clicks a chef to hurry them)
+var boosts: Dictionary = {}
 var tasks: Dictionary = {}  # worker char id -> Job
 var spawn_acc: float = 0.0
 var _next_id: int = 1
@@ -64,16 +55,6 @@ func ensure_layout() -> void:
 	var n := sim.seats()
 	while seats.size() < n:
 		seats.append(null)
-	for type in STATION_TYPES:
-		var have := 0
-		for st in stations:
-			if st.type == type:
-				have += 1
-		while have < sim.station_count(type):
-			var st := Station.new()
-			st.type = type
-			stations.append(st)
-			have += 1
 
 
 func staff() -> Array[Character]:
@@ -107,8 +88,6 @@ func open() -> void:
 func close() -> void:
 	for c in customers.duplicate():
 		_leave(c, "closing")
-	for st in stations:
-		st.job = null
 	jobs.clear()
 	tasks.clear()
 	queue.clear()
@@ -130,23 +109,25 @@ func tick(dt: float) -> void:
 	_tick_cooking(dt)
 	_tick_delivery(dt)
 	_tick_eating(dt)
-	for st in stations:
-		st.boost = maxf(0.0, st.boost - dt)
-		st.cooldown = maxf(0.0, st.cooldown - dt)
+	for id in boosts:
+		boosts[id][0] = maxf(0.0, boosts[id][0] - dt)
+		boosts[id][1] = maxf(0.0, boosts[id][1] - dt)
 
 
 # --- Player actions --------------------------------------------------------
 
-func boost_station(idx: int) -> bool:
-	if idx < 0 or idx >= stations.size():
+## Player cheers a chef on: faster cooking for a few seconds, then a cooldown.
+func boost_chef(chef_id: int) -> bool:
+	var b: Array = boosts.get(chef_id, [0.0, 0.0])
+	if b[1] > 0.0:
 		return false
-	var st := stations[idx]
-	if st.cooldown > 0.0:
-		return false
-	st.boost = sim.b.boost_duration
-	st.cooldown = sim.b.boost_cooldown
-	sim.events.station_boosted.emit(idx)
+	boosts[chef_id] = [sim.b.boost_duration, sim.b.boost_cooldown]
+	sim.events.chef_boosted.emit(chef_id)
 	return true
+
+
+func is_boosted(chef_id: int) -> bool:
+	return boosts.has(chef_id) and boosts[chef_id][0] > 0.0
 
 
 ## Player hands a ready dish to the customer instantly.
@@ -323,8 +304,6 @@ func _leave(c: Customer, reason: String) -> void:
 # --- Kitchen ---------------------------------------------------------------
 
 func _cancel_job(job: Job) -> void:
-	if job.station >= 0:
-		stations[job.station].job = null
 	var worker := job.worker
 	if worker >= 0:
 		tasks.erase(worker)
@@ -367,19 +346,14 @@ func _try_cook(chef: Character) -> void:
 	for job in jobs:
 		if job.state != "queued":
 			continue
-		for i in stations.size():
-			var st := stations[i]
-			if st.type == job.recipe.station and st.job == null:
-				job.state = "cooking"
-				job.station = i
-				job.worker = chef.id
-				job.progress = 0.0
-				st.job = job
-				tasks[chef.id] = job
-				if job.quality < 3 and sim.rng.randf() < chef.skill * sim.b.skill_quality_chance:
-					job.quality += 1
-				sim.events.job_started.emit(job, chef)
-				return
+		job.state = "cooking"
+		job.worker = chef.id
+		job.progress = 0.0
+		tasks[chef.id] = job
+		if job.quality < 3 and sim.rng.randf() < chef.skill * sim.b.skill_quality_chance:
+			job.quality += 1
+		sim.events.job_started.emit(job, chef)
+		return
 
 
 func _tick_cooking(dt: float) -> void:
@@ -388,13 +362,11 @@ func _tick_cooking(dt: float) -> void:
 			continue
 		var chef := sim.state.get_char(job.worker)
 		var spd := (chef.speed if chef else 1.0) * sim.cook_speed_bonus() * sim.work_factor()
-		if stations[job.station].boost > 0.0:
+		if is_boosted(job.worker):
 			spd *= sim.b.boost_mult
 		job.progress += dt * spd
 		if job.progress >= job.recipe.cook_time:
 			job.state = "ready"
-			stations[job.station].job = null
-			job.station = -1
 			tasks.erase(job.worker)
 			job.worker = -1
 			sim.report_add("cooked", 1)

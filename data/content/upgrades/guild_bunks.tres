@@ -15,4 +15,4 @@ cost_mult = 2.2
 max_level = 3
 min_renown = 0
 requires_boss = 0
-sort_order = 6
+sort_order = 4

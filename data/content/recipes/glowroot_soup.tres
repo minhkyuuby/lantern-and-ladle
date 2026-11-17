@@ -8,7 +8,6 @@ id = "glowroot_soup"
 display_name = "Glowroot Soup"
 icon = "🍲"
 ingredients = {"glowroot": 1, "mushroom": 1, "moss": 1}
-station = "pot"
 cook_time = 8.0
 price = 24
 chef_level = 2

@@ -8,7 +8,6 @@ id = "boar_curry"
 display_name = "Orchard Boar Curry"
 icon = "🍛"
 ingredients = {"boar": 1, "blossom": 1, "rice": 1}
-station = "pot"
 cook_time = 10.0
 price = 50
 chef_level = 6

@@ -8,7 +8,6 @@ id = "moss_herb_stew"
 display_name = "Moss-Herb Stew"
 icon = "🥘"
 ingredients = {"rat_meat": 1, "moss": 2, "glowroot": 1}
-station = "pot"
 cook_time = 10.0
 price = 36
 chef_level = 3

@@ -8,7 +8,6 @@ id = "slime_jelly"
 display_name = "Slime Jelly Cup"
 icon = "🍮"
 ingredients = {"slime": 2}
-station = "pot"
 cook_time = 6.0
 price = 18
 chef_level = 2

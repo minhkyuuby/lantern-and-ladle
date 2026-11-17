@@ -38,7 +38,7 @@ func show_report(heading: String, lines: Array, auto_hide: float = 9.0) -> void:
 		body.add_child(UIKit.wrap_label(s, 13, color))
 	visible = true
 	_hide_t = auto_hide
-	position = Vector2((860 - 420) / 2.0, 70)
+	position = Vector2((1280 - 420) / 2.0, 104)
 	size = Vector2(420, 0)
 	# Wrapped labels only know their height after a layout pass; shrink to fit then.
 	(func(): size = Vector2(420, 0)).call_deferred()
@@ -65,7 +65,7 @@ static func lines_for_day(r: Dictionary) -> Array[String]:
 	if r["no_food"] > maxi(r["left_angry"], no_seat) and r["no_food"] > 0:
 		out.append("Hint: the kitchen ran out of ingredients — more adventurers or deeper floors.")
 	elif r["left_angry"] > maxi(no_seat, 1):
-		out.append("Hint: service is too slow — hire a server/chef, add stations or kitchen tools.")
+		out.append("Hint: service is too slow — hire another chef or a server, or buy kitchen tools.")
 	elif no_seat > 2:
 		out.append("Hint: customers couldn't get a seat — buy extra stools.")
 	return out

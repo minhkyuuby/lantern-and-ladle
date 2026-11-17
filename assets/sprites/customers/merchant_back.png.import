@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dc8l55vtltrac"
-path="res://.godot/imported/oven_idle.png-3aa5f3b666842870977dbdbce02ea881.ctex"
+uid="uid://bxodghb4g7hbd"
+path="res://.godot/imported/merchant_back.png-5fa7ac31caa63a2b522260ff5a15a7be.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/stations/oven_idle.png"
-dest_files=["res://.godot/imported/oven_idle.png-3aa5f3b666842870977dbdbce02ea881.ctex"]
+source_file="res://assets/sprites/customers/merchant_back.png"
+dest_files=["res://.godot/imported/merchant_back.png-5fa7ac31caa63a2b522260ff5a15a7be.ctex"]
 
 [params]
 

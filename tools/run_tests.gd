@@ -37,7 +37,7 @@ func _test_content(db: ContentDB) -> void:
 	check(db.floors.size() == 6, "6 floors loaded")
 	for i in db.floors.size():
 		check(db.floors[i].index == i + 1, "floor %d sorted" % (i + 1))
-	check(db.upgrades.size() >= 11, "upgrades loaded")
+	check(db.upgrades.size() >= 8, "upgrades loaded")
 	check(db.customer_types.size() == 4, "4 customer types")
 	for fd in db.floors:
 		if fd.requires_upgrade != "":
@@ -151,11 +151,6 @@ func _test_biome_two(db: ContentDB) -> void:
 	check(s.max_floor == 4, "buying the permit opens Floor 4")
 	check(sim.progression.floor_lock_reason(5) != "", "Floor 5 still needs Floor 4 clears")
 
-	check(sim.station_count("oven") == 0, "no oven at start")
-	check(sim.progression.buy_upgrade("clay_oven"), "oven can be bought")
-	sim.restaurant.ensure_layout()
-	var ovens := sim.restaurant.stations.filter(func(st): return st.type == "oven")
-	check(ovens.size() == 1, "oven station added to the kitchen")
 
 	var p := s.parties[0]
 	var before := sim.expedition.power(p)

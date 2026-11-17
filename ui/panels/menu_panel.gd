@@ -41,7 +41,7 @@ func build() -> void:
 		var ing := ""
 		for id in r.ingredients:
 			ing += "%s×%d " % [sim.db.ingredient_icon(id), int(r.ingredients[id])]
-		v.add_child(UIKit.label("%s· %s · %.0fs · tags: %s" % [ing, r.station, r.cook_time, ", ".join(PackedStringArray(r.tags))], 11, UIKit.MUTED))
+		v.add_child(UIKit.label("%s· %.0fs · tags: %s" % [ing, r.cook_time, ", ".join(PackedStringArray(r.tags))], 11, UIKit.MUTED))
 		var status := UIKit.label("", 12)
 		v.add_child(status)
 		live(func():
@@ -53,9 +53,6 @@ func build() -> void:
 				else:
 					status.text = "🔒 Head chef Lv %d" % r.chef_level
 				status.add_theme_color_override("font_color", UIKit.MUTED)
-			elif sim.station_count(r.station) <= 0:
-				status.text = "Needs a %s" % r.station
-				status.add_theme_color_override("font_color", UIKit.BAD)
 			else:
 				var n := sim.state.inventory.portions(r.ingredients)
 				status.text = "Can make %d right now" % n

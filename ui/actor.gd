@@ -24,7 +24,8 @@ func setup(icon_text: String, color: Color, caption_text: String = "", size_px: 
 	if sprite:
 		body = UIKit.rect(Color(0, 0, 0, 0.3), Vector2(5, size_px.y - 5), Vector2(size_px.x - 10, 6), 3)  # ground shadow
 		add_child(body)
-		var pic := SpriteLib.view(sprite, SpriteLib.CHAR_SCALE)
+		var pic := SpriteLib.view(sprite, maxi(1, int(round(size_px.y / sprite.get_height()))))
+		pic.name = "Pic"
 		pic.position = Vector2((size_px.x - pic.size.x) / 2.0, size_px.y - pic.size.y)
 		add_child(pic)
 	else:

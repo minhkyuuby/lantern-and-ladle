@@ -16,9 +16,6 @@ extends Resource
 @export_group("Restaurant")
 @export var base_seats: int = 3
 @export var max_seats: int = 8
-@export var base_grills: int = 1
-@export var base_pots: int = 1
-@export var base_ovens: int = 0
 @export var max_queue: int = 4
 @export var queue_patience: float = 20.0
 ## Customers per second at 0 renown.

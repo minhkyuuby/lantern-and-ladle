@@ -1,10 +1,14 @@
 extends Control
-## Builds the prototype screen: HUD, restaurant cutaway, dungeon strip, side tabs and overlays.
+## Builds the screen: one full-size view at a time (Stall or Hollow), a floating HUD, a bottom
+## button bar, and a side drawer that shows one management panel at a time.
+
+const VIEW_H := 656.0
 
 var hud: Hud
 var restaurant: RestaurantView
-var dungeon: DungeonStrip
-var tabs: TabContainer
+var hollow: HollowView
+var bar: BottomBar
+var drawer: Drawer
 var ledger: LedgerPopup
 var toasts: Toasts
 var debug: DebugPanel
@@ -17,45 +21,44 @@ func _ready() -> void:
 	theme = UIKit.make_theme()
 	add_child(UIKit.rect(UIKit.BG, Vector2.ZERO, Vector2(1280, 720)))
 
-	hud = Hud.new()
-	hud.position = Vector2.ZERO
-	hud.size = Vector2(1280, 46)
-	hud.custom_minimum_size = Vector2(1280, 46)
-	add_child(hud)
-
 	restaurant = RestaurantView.new()
-	restaurant.position = Vector2(0, 48)
 	add_child(restaurant)
+	hollow = HollowView.new()
+	hollow.visible = false
+	add_child(hollow)
 
-	dungeon = DungeonStrip.new()
-	dungeon.position = Vector2(0, 448)
-	add_child(dungeon)
-
-	tabs = TabContainer.new()
-	tabs.position = Vector2(864, 50)
-	tabs.size = Vector2(412, 666)
-	add_child(tabs)
-	_add_tab(StaffPanel.new(), "Crew")
-	_add_tab(HirePanel.new(), "Hire")
-	_add_tab(ExpeditionPanel.new(), "Dives")
-	_add_tab(MenuPanel.new(), "Menu")
-	_add_tab(PantryPanel.new(), "Pantry")
-	_add_tab(UpgradesPanel.new(), "Shop")
-	_add_tab(LegacyPanel.new(), "Legacy")
-	_add_tab(LogPanel.new(), "Log")
+	hud = Hud.new()
+	add_child(hud)
+	hud.hollow_requested.connect(func(): _show_view("hollow"))
 
 	toasts = Toasts.new()
-	toasts.position = Vector2(440, 590)
-	toasts.size = Vector2(410, 124)
-	toasts.alignment = BoxContainer.ALIGNMENT_END
+	toasts.position = Vector2(440, 96)
+	toasts.size = Vector2(400, 0)
 	add_child(toasts)
 
 	ledger = LedgerPopup.new()
-	ledger.position = Vector2(220, 118)
 	add_child(ledger)
 
+	drawer = Drawer.new()
+	add_child(drawer)
+	drawer.add_panel("crew", "👥 Crew", StaffPanel.new())
+	drawer.add_panel("hire", "📋 Hire", HirePanel.new())
+	drawer.add_panel("dives", "🗺 Dives", ExpeditionPanel.new())
+	drawer.add_panel("menu", "📜 Menu", MenuPanel.new())
+	drawer.add_panel("pantry", "🧺 Pantry", PantryPanel.new())
+	drawer.add_panel("shop", "🛒 Shop", UpgradesPanel.new())
+	drawer.add_panel("legacy", "🏮 Legacy", LegacyPanel.new())
+	drawer.add_panel("log", "📓 Log", LogPanel.new())
+
+	bar = BottomBar.new()
+	bar.position = Vector2(0, VIEW_H)
+	add_child(bar)
+	bar.view_selected.connect(_show_view)
+	bar.panel_pressed.connect(func(p): drawer.toggle(p))
+	drawer.panel_changed.connect(func(p): bar.set_open_panel(p))
+
 	debug = DebugPanel.new()
-	debug.position = Vector2(640, 56)
+	debug.position = Vector2(640, 80)
 	add_child(debug)
 
 	# Topmost layer for effects that cross panels (gold flying to the HUD).
@@ -83,9 +86,11 @@ func _ready() -> void:
 		if important and not Game.catching_up:
 			toasts.push(line))
 
-	var tab_arg := Game.arg("tab")
-	if tab_arg != "":
-		tabs.current_tab = clampi(int(tab_arg), 0, tabs.get_tab_count() - 1)
+	# test hooks: --panel=crew|hire|dives|… opens a drawer, --view=hollow switches view
+	if Game.arg("panel") != "":
+		drawer.open(Game.arg("panel"))
+	if Game.arg("view") != "":
+		_show_view(Game.arg("view"))
 
 	if not Game.startup_report.is_empty():
 		ledger.show_report(Game.startup_report["title"], Game.startup_report["lines"], 20.0)
@@ -94,6 +99,8 @@ func _ready() -> void:
 
 ## "+12g" pops over the seat, then arcs up to the HUD gold counter, shrinking, and bounces it on arrival.
 func _fly_gold(start: Vector2, box: Vector2, amount: float) -> void:
+	if not restaurant.visible:
+		return  # the coins still count; no animation while looking at the Hollow
 	hud.gold_in_flight += amount  # the counter only counts it once it lands
 	var l := UIKit.label("+%dg" % int(round(amount)), 14, UIKit.ACCENT)
 	l.add_theme_color_override("font_outline_color", Color(0, 0, 0, 0.85))
@@ -146,9 +153,11 @@ func _open_next_story() -> void:
 		Game.sim.story.finish(q[0])  # unknown scene id (e.g. removed file): drop it
 
 
-func _add_tab(node: Control, title: String) -> void:
-	tabs.add_child(node)
-	tabs.set_tab_title(tabs.get_tab_count() - 1, title)
+func _show_view(view: String) -> void:
+	restaurant.visible = view != "hollow"
+	hollow.visible = view == "hollow"
+	hud.show_goals(view != "hollow")
+	bar.set_view("hollow" if view == "hollow" else "stall")
 
 
 func _on_day_ended(r: Dictionary) -> void:
@@ -162,6 +171,10 @@ func _unhandled_input(event: InputEvent) -> void:
 		match event.keycode:
 			KEY_F1:
 				debug.visible = not debug.visible
+			KEY_TAB:
+				_show_view("stall" if hollow.visible else "hollow")
+			KEY_ESCAPE:
+				drawer.close()
 			KEY_SPACE:
 				Game.set_speed(0.0 if Game.time_scale > 0.0 else 1.0)
 			KEY_1:

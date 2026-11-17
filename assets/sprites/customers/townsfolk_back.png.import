@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cban1cy7b1sqr"
-path="res://.godot/imported/oven_cook.png-f9e2fd3504bd840a706673da57d46369.ctex"
+uid="uid://bmin75ivau0bh"
+path="res://.godot/imported/townsfolk_back.png-96ce39fab89ed9a4443206b2647f8389.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/stations/oven_cook.png"
-dest_files=["res://.godot/imported/oven_cook.png-f9e2fd3504bd840a706673da57d46369.ctex"]
+source_file="res://assets/sprites/customers/townsfolk_back.png"
+dest_files=["res://.godot/imported/townsfolk_back.png-96ce39fab89ed9a4443206b2647f8389.ctex"]
 
 [params]
 
