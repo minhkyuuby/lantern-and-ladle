@@ -1,0 +1,54 @@
+# Chapter 1 — the stall, the letter, the crew.
+@id ch1_inheritance
+@title Inheritance
+@trigger start
+@order 10
+
+== start
+narrator: Dusk. One by one, the lanterns of Gloamhollow wake up.
+narrator: Your new stall is small, smells of old smoke and onions, and has exactly three wobbly stools.
+odessa (happy): Dear one — if you're reading this, the stall is yours now.
+odessa (neutral): The roof leaks. The stools wobble. And Maro will pretend he doesn't need you.
+odessa (sad): He does. Feed the street, pay your people, and listen to the Hollow when it breathes.
+odessa (happy): — O.  P.S. Don't let Maro skip lunch.
+maro (neutral): …
+maro (angry): I don't skip lunch.
+maro (neutral): Hm. So you're the one she picked.
+* "I'd like to learn from you, Maro."
+  ~ affinity maro +1
+  -> learn
+* "I'm the owner now. Let's open up."
+  ~ flag bold_start
+  -> bold
+* "Where did Odessa go?"
+  ~ flag asked_odessa
+  -> where
+
+== learn
+maro (surprised): …Learn.
+maro (happy): Taste first. Talk later. That's the whole lesson.
+-> pip
+
+== bold
+maro (neutral): Hm. She said the same thing, her first night. Then she burned the rice.
+maro (happy): Here. Her emergency jar. Don't burn the rice.
+~ gold +30
+-> pip
+
+== where
+maro (sad): Away. Looking for something she lost a long time ago.
+maro (neutral): She'll write. She always writes.
+-> pip
+
+== pip
+pip (surprised): Is this them?! Is this the new boss?!
+pip (happy): Hi! I'm Pip! I dive the Hollow, I bring back mushrooms, and one day I'm going to be a LEGEND.
+maro (neutral): You're going to be late.
+pip (happy): Right! Floor One! Back before the soup!
+* "Be careful down there."
+  ~ affinity pip +1
+  pip (happy): Careful's my middle name! …It isn't. It's Wren. Bye!
+* "Bring back lots of mushrooms!"
+  pip (happy): ALL the mushrooms! Bye!
+narrator: The door bangs. Somewhere below, the Hollow breathes out — warm, and a little sweet.
+-> end

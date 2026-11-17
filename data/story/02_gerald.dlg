@@ -1,0 +1,31 @@
+# Pip's first dive comes home — and the compass.
+@id pip_first_return
+@title Gerald
+@trigger first_return
+@order 20
+
+== start
+pip (happy): I'M BACK! Look! Seven mushrooms, and only one of them bit me!
+maro (surprised): Mushrooms don't bite.
+pip (neutral): Down there they do. Also, I named the big rat Gerald. Gerald is my nemesis now.
+* "Amazing haul, Pip!"
+  ~ affinity pip +1
+  pip (happy): Right?! Gerald won't know what hit him tomorrow.
+* "You came back bitten. Rest first."
+  ~ affinity maro +1
+  pip (sad): Fiiine.
+  maro (happy): Hm. Good boss.
+* "What's that brass thing on your belt?"
+  ~ flag knows_wren
+  -> compass
+narrator: Maro takes the mushrooms. Something in the pot starts to smell like home.
+-> end
+
+== compass
+pip (neutral): Oh — this? It's a compass. It was Mum's.
+pip (sad): Wren the Cartographer. She mapped half the Hollow. Then she went down to the Orchard and… didn't come back up.
+maro (sad): …
+pip (happy): The needle never points north. It points down. I think it's pointing at her.
+pip (neutral): Anyway! Mushrooms! Soup! Go go go!
+narrator: Maro takes the mushrooms. He doesn't say anything for a long time.
+-> end

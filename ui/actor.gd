@@ -46,7 +46,7 @@ func setup(icon_text: String, color: Color, caption_text: String = "", size_px: 
 	add_child(caption)
 	bubble = UIKit.label("", 16)
 	bubble.add_theme_stylebox_override("normal", UIKit.style(Color(1, 1, 1, 0.92), 8, Color.TRANSPARENT, 0, 2))
-	bubble.add_theme_color_override("font_color", Color("2a2030"))
+	bubble.add_theme_color_override("font_color", Color("3b2420"))
 	bubble.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	bubble.size = Vector2(36, 26)
 	bubble.position = Vector2(size_px.x / 2.0 - 18.0, -32.0)

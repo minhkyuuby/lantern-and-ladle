@@ -15,6 +15,7 @@ func _init() -> void:
 	_test_deadlock(db)
 	_test_biome_two(db)
 	_test_festival(db)
+	_test_story(db)
 	_test_save_roundtrip(db)
 	print("\n%d passed, %d failed" % [_passes, _fails])
 	quit(1 if _fails > 0 else 0)
@@ -210,6 +211,81 @@ func _test_festival(db: ContentDB) -> void:
 	check(not next.progression.buy_perk("golden_ladle"), "can't buy without ladles")
 	var back := GameState.from_dict(JSON.parse_string(JSON.stringify(s.to_dict())))
 	check(back.ladles == s.ladles and back.perk_level("golden_ladle") == 1 and back.festivals == 1, "legacy survives save/load")
+
+
+func _test_story(db: ContentDB) -> void:
+	print("story")
+	check(db.scene_errors.is_empty(), "all .dlg scenes parse cleanly %s" % [db.scene_errors])
+	check(db.scenes.size() >= 6, "%d story scenes loaded" % db.scenes.size())
+	for sc in db.scene_list():
+		for st in sc["steps"]:
+			if st["t"] == "say" and st["who"] != "narrator":
+				var face: String = st["face"] if st["face"] != "" else "neutral"
+				var has := ResourceLoader.exists("res://assets/sprites/portraits/%s_%s.png" % [st["who"], face]) \
+					or ResourceLoader.exists("res://assets/sprites/portraits/%s.png" % st["who"])
+				if not has:
+					check(false, "%s line %d: no portrait for %s (%s)" % [sc["id"], st["line"], st["who"], face])
+
+	# Parser: options, bodies, conditions and fall-through
+	var sc := DialogParser.parse("""@id t
+@trigger start
+== start
+maro (happy): Hi.
+* "One"
+  ~ flag one
+* "Two"
+  ? flag secret
+  -> two
+narrator: after
+-> end
+== two
+pip: two
+""", "inline")
+	check(sc["errors"].is_empty(), "inline scene parses %s" % [sc["errors"]])
+	var sim := Sim.new(db, null, 21)
+	var r := DialogRunner.new(sc, sim.story)
+	var s1 := r.advance()
+	check(s1["t"] == "say" and s1["who"] == "maro" and s1["face"] == "happy", "first line has speaker + expression")
+	var c := r.advance()
+	check(c["t"] == "choice" and c["options"].size() == 1, "conditional option hidden without its flag")
+	r.choose(c["options"][0]["index"])
+	check(r.advance()["text"] == "after", "play continues after the choice")
+	check(sim.story.check(["flag", "one"]), "option body effect applied")
+	check(r.advance()["t"] == "end", "-> end finishes the scene")
+
+	# Triggers
+	sim = Sim.new(db, null, 22)
+	check(sim.story.queue() == ["ch1_inheritance"], "new game queues the opening scene only")
+	var run := DialogRunner.new(db.scenes["ch1_inheritance"], sim.story)
+	var guard := 0
+	while guard < 100:
+		guard += 1
+		var st := run.advance()
+		if st["t"] == "choice":
+			run.choose(st["options"][0]["index"])
+		elif st["t"] == "end":
+			break
+	sim.story.finish("ch1_inheritance")
+	check(sim.story.affinity("maro") == 1 and sim.story.affinity("pip") == 1, "first options raise Maro and Pip affinity")
+	sim.step(300.0, 1.0)
+	check("pip_first_return" in sim.story.queue(), "first dive back queues 'Gerald'")
+	while sim.state.day < 2 or sim.state.phase != Sim.Phase.DUSK:
+		sim.tick(1.0)
+	check("bramblewick_first" in sim.story.queue(), "dusk of day 2 queues Bramblewick")
+	sim.state.max_floor = 3
+	sim.story.refresh()
+	check("maro_floor3" in sim.story.queue(), "Floor 3 queues Maro's scene")
+
+	# Bonuses feed the game and reset with the festival; memories don't
+	var before := sim.cook_speed_bonus()
+	sim.story.apply(["bonus", "cook_speed", "+0.10"])
+	check(is_equal_approx(sim.cook_speed_bonus(), before + 0.10), "story bonus raises cooking speed")
+	var back := GameState.from_dict(JSON.parse_string(JSON.stringify(sim.state.to_dict())))
+	check(back.story["affinity"]["maro"] == 1 and "maro_floor3" in back.story["queue"], "story state survives save/load")
+	sim.state.slice_complete = true
+	var next := Sim.new(db, null, 23, sim.festival_legacy())
+	check(next.story.is_seen("ch1_inheritance") and next.story.bonus("cook_speed") == 0.0, "festival keeps memories, clears bonuses")
+	check(not ("ch1_inheritance" in next.story.queue()), "seen scenes don't replay next season")
 
 
 func _test_save_roundtrip(db: ContentDB) -> void:

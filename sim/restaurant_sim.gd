@@ -294,7 +294,7 @@ func _tick_eating(dt: float) -> void:
 
 func _pay(c: Customer) -> void:
 	var r := c.recipe
-	var price := r.price * float(sim.b.quality_mult[c.quality]) * c.type.price_mult * (1.0 + sim.perk_amount("price"))
+	var price := r.price * float(sim.b.quality_mult[c.quality]) * c.type.price_mult * (1.0 + sim.perk_amount("price") + sim.story_amount("price"))
 	var mood := clampf(1.0 - c.wait / maxf(1.0, c.patience), 0.0, 1.0)
 	var tip := price * sim.b.tip_rate * c.type.tip_mult * (0.5 + mood)
 	if c.quality < c.type.min_quality:

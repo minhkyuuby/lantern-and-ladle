@@ -39,3 +39,8 @@ signal board_refreshed()
 signal upgrade_bought(upgrade)
 signal parties_changed()
 signal perk_bought(perk)
+
+# Story
+signal story_queued(scene_id: String)
+signal story_finished(scene_id: String)
+signal story_effect(text: String)

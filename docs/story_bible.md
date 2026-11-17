@@ -340,7 +340,55 @@ Something story-ish lands every 1–3 days. The quietest stretch (days 20–27) 
 
 ---
 
-## 7. Open questions
+## 7. Deep story — what's really going on
+
+### 7.1 The secret history (revealed in pieces across season 1)
+
+| Years ago | What happened | Who knows |
+|---|---|---|
+| 60 | The founders light the **Great Lantern** with oil rendered from Orchard **royal jelly**. The Hollow warms, the night market is born. Every year the town sends a party to "take the Queen's tithe". | Brother Tull (temple records) |
+| 25 | **Odessa** (cook), **Wren** (cartographer), **Maro** and **Rook** (adventurers) form a crew. Wren notices the Queen is shrinking. The tithe is starving her — the "blight" is hunger. | All four |
+| 20 | The crew goes down to stop the tithe. The Rat King's swarm hits them on Floor 3. Rook drops his ladle covering Maro's retreat; Maro runs and never goes down again. Wren pushes on alone into the Orchard and doesn't come back. | Maro (guilt), Odessa |
+| 20–1 | Odessa runs the stall and quietly cuts the temple's jelly supply, buying the Queen time. She raises Pip, Wren's child, without telling Pip the whole story. | Odessa |
+| Now | The Lantern dims because Odessa has been *refusing* to supply the jelly. She leaves to find a way to light it **without** feeding on the Queen — and leaves you the stall, the crew, and the choice. | Odessa |
+
+**Season 1's real question:** the Lantern keeps the town warm, but it's been feeding on someone. What do you light it with?
+
+### 7.2 Characters in depth
+
+| | Wants | Needs | Fears | Secret |
+|---|---|---|---|---|
+| 🍳 **Maro** | To keep everyone fed and safe, upstairs | To forgive himself for running | Losing another crewmate below | He left Rook behind; he's sure Rook died |
+| 🗡 **Pip** | To be a legend like their mother | To be someone, not someone's child | That Wren left on purpose | Pip already knows Wren went to *save* the Queen — and resents it |
+| ✉ **Odessa** | The market to outlive her | To stop carrying it alone | That you'll make her mistake (keeping secrets) | She's been starving the Lantern on purpose |
+| 🛡 **Bramblewick** | To taste Elsie's soup once more | To let the past be past | Being forgotten | He led three tithe parties. He was proud of it then. |
+| 🏮 **Tull** | The Lantern lit, the town safe | To admit the tradition is wrong | Being the keeper who let it go dark | He's read the records. He knows about the tithe. |
+| 🦋 **Moth** | Their mother to stop hurting | A grown-up to listen | Upstairs folk with swords | The Queen sent Moth up to find "the cook who stopped the tithe" — Odessa |
+
+### 7.3 Choices that matter
+
+Choices change **affinity** (0–5 per character), set **flags** that unlock or change later lines, and give small **story bonuses** for the season. No choice locks you out of progress.
+
+| Scene | Choice | Effect |
+|---|---|---|
+| Ch. 1 *Inheritance* | Learn from Maro / take charge / ask about Odessa | Maro affinity, starting gold, or the first Odessa lore |
+| *Gerald* (first dive back) | Praise / scold / ask about the compass | Pip affinity; asking reveals Wren (`knows_wren`) |
+| *Bramblewick* | Soup on the house / full price / ask about the Hollow | Renown, or the *crown of spoons* lore (`heard_spoons`) |
+| Ch. 3 *Floor Three* | Push Maro / protect Maro / tell Pip to wait | Maro opens up (needs affinity ≥ 1) or relaxes (+cook speed) |
+| Ch. 4 *Crown of Spoons* | Hang the ladle at the pass / give it to Maro / "Let's find Rook" | +cook speed, +dish prices, or seeds the Rook echo (`find_rook`) |
+| *The Dimming* | Trust Tull / call it a sales pitch | Renown, or Tull admits the records exist (`tithe_hint`) |
+| **Season finale** *(planned)* | Light the Lantern with royal jelly (tradition) / with the stall's cooking fire (Odessa's way) | Big ladle bonus vs. the Queen as a lasting ally and a different festival scene |
+
+### 7.4 Dialog scene presentation
+
+Focused scenes pause the game and dim the stall. Large pixel busts (6× scale) stand on the left
+(your crew) and right (visitors); the speaker is lit, the listener dims. Text types in under a name
+plate; options appear as numbered buttons (keys 1–4). Scenes queue up while you're idle or away and
+open on their own at 1–2× speed; at faster speeds a 📖 button in the HUD waits for you instead.
+
+Scenes are written in a small script format in `data/story/*.dlg` (see the header of any file).
+
+## 8. Open questions
 
 1. **Branching?** Everything here is linear. A light choice could fit Ch. 7 (fight the Queen vs. calm her with the cake first) — worth it?
 2. **Names and pronouns** for Pip, Moth and Odessa are written neutrally / lightly gendered; adjust to taste.

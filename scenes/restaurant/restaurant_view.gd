@@ -14,9 +14,9 @@ const STATION_DX := 90.0
 const STATION_Y := 30.0
 const STATION_SIZE := Vector2(82, 70)
 const STATION_STYLE := {
-	"grill": ["🔥 Grill", Color("5a3a3a")],
-	"pot": ["🍲 Pot", Color("3a4a5a")],
-	"oven": ["🧱 Oven", Color("5a4a32")],
+	"grill": ["🔥 Grill", Color("4e3428")],
+	"pot": ["🍲 Pot", Color("3e3530")],
+	"oven": ["🧱 Oven", Color("523a2a")],
 }
 const CHEF_IDLE_X0 := 20.0
 const STAFF_DX := 50.0  # wider than Actor.CAPTION_W so staff names never touch
@@ -80,15 +80,39 @@ func _live() -> bool:
 # --- Static scenery ----------------------------------------------------------
 
 func _build_static() -> void:
-	add_child(UIKit.rect(Color("3a2840"), Vector2.ZERO, Vector2(STREET_X, KITCHEN_H)))
-	for i in 7:  # back-wall tiles
-		add_child(UIKit.rect(Color(1, 1, 1, 0.03), Vector2(i * 100 + 10, 14), Vector2(80, 8), 3))
-	add_child(UIKit.rect(Color("261d30"), Vector2(0, KITCHEN_H), Vector2(STREET_X, H - KITCHEN_H)))
-	add_child(UIKit.rect(Color("1b2338"), Vector2(STREET_X, 0), Vector2(W - STREET_X, H)))
-	add_child(UIKit.rect(Color("27304a"), Vector2(STREET_X, 290), Vector2(W - STREET_X, 110)))
+	# Kitchen back wall: warm wood planks
+	add_child(UIKit.rect(Color("4a3328"), Vector2.ZERO, Vector2(STREET_X, KITCHEN_H)))
+	for i in 9:
+		add_child(UIKit.rect(Color("3e2a21"), Vector2(i * 80 + 38, 0), Vector2(2, KITCHEN_H)))
+	add_child(UIKit.rect(Color("553b2e"), Vector2(0, 0), Vector2(STREET_X, 6)))
+	# Shelf with jars behind the chefs
+	add_child(UIKit.rect(Color("6e4a34"), Vector2(16, 58), Vector2(120, 5), 2))
+	for j in 5:
+		var jc: Color = [Color("e8b860"), Color("9bcf7a"), Color("e2805f"), Color("c8b0e0"), Color("f0d8a8")][j]
+		add_child(UIKit.rect(jc.darkened(0.15), Vector2(22 + j * 22, 42), Vector2(14, 16), 4))
+		add_child(UIKit.rect(Color("8a5a3c"), Vector2(24 + j * 22, 39), Vector2(10, 4), 1))
+	# Floor: warm boards
+	add_child(UIKit.rect(Color("2e2119"), Vector2(0, KITCHEN_H), Vector2(STREET_X, H - KITCHEN_H)))
+	for i in 5:
+		add_child(UIKit.rect(Color("271b14"), Vector2(0, KITCHEN_H + 40 + i * 36), Vector2(STREET_X, 2)))
+	# Street: cool night outside the warm stall, with stars and far-off stall lights
+	add_child(UIKit.rect(Color("1e2336"), Vector2(STREET_X, 0), Vector2(W - STREET_X, H)))
+	add_child(UIKit.rect(Color("2a3048"), Vector2(STREET_X, 290), Vector2(W - STREET_X, 110)))
+	var rng := RandomNumberGenerator.new()
+	rng.seed = 7
+	for i in 14:
+		var star := UIKit.rect(Color(1, 0.95, 0.8, rng.randf_range(0.35, 0.9)), Vector2(STREET_X + rng.randf_range(8, 150), rng.randf_range(40, 200)), Vector2(2, 2))
+		add_child(star)
+	for i in 3:
+		add_child(_glow(Vector2(STREET_X + 30 + i * 50, 285), 26, Color(1.0, 0.7, 0.4, 0.35)))
+		add_child(UIKit.rect(Color("f0a860"), Vector2(STREET_X + 28 + i * 50, 282), Vector2(5, 6), 2))
 	var street := UIKit.label("Night Market Street", 11, UIKit.MUTED)
 	street.position = Vector2(STREET_X + 10, 300)
 	add_child(street)
+	# Warm lantern light pooling over the kitchen and the counter
+	for p in [Vector2(220, 20), Vector2(420, 20), Vector2(620, 20)]:
+		add_child(_glow(p, 150, Color(1.0, 0.72, 0.42, 0.16)))
+	add_child(_glow(Vector2(350, COUNTER_Y + 20), 330, Color(1.0, 0.65, 0.35, 0.10)))
 	# counter
 	add_child(UIKit.rect(Color("8a5a3b"), Vector2(10, COUNTER_Y), Vector2(STREET_X - 20, 22), 4))
 	add_child(UIKit.rect(Color("a8744d"), Vector2(10, COUNTER_Y), Vector2(STREET_X - 20, 5), 3))
@@ -116,6 +140,28 @@ func _build_static() -> void:
 		lock.position = Vector2(x + 10, SEAT_Y + 20)
 		add_child(lock)
 		seat_views.append({"stool": stool, "leg": leg, "lock": lock})
+
+
+## Soft radial light (centre `pos`, radius `r`) that fades to nothing.
+func _glow(pos: Vector2, r: float, color: Color) -> TextureRect:
+	var g := Gradient.new()
+	g.set_color(0, color)
+	g.set_color(1, Color(color.r, color.g, color.b, 0.0))
+	var tex := GradientTexture2D.new()
+	tex.gradient = g
+	tex.fill = GradientTexture2D.FILL_RADIAL
+	tex.fill_from = Vector2(0.5, 0.5)
+	tex.fill_to = Vector2(1.0, 0.5)
+	tex.width = 64
+	tex.height = 64
+	var t := TextureRect.new()
+	t.texture = tex
+	t.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	t.stretch_mode = TextureRect.STRETCH_SCALE
+	t.size = Vector2(r * 2, r * 2)
+	t.position = pos - Vector2(r, r)
+	t.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	return t
 
 
 func _sync_layout() -> void:

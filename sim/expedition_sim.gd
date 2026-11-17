@@ -20,7 +20,7 @@ func members(p: Party) -> Array[Character]:
 
 ## Party power, including the Forged Gear bonus for every member.
 func power(p: Party) -> float:
-	var gear := sim.upgrade_amount("power")
+	var gear := sim.upgrade_amount("power") + sim.story_amount("power")
 	var t := 0.0
 	for c in members(p):
 		t += c.power + gear

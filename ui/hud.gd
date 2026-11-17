@@ -2,6 +2,9 @@ class_name Hud
 extends PanelContainer
 
 signal debug_pressed
+signal story_pressed
+
+var story_button: Button
 
 var sim: Sim
 var gold: Label
@@ -19,7 +22,7 @@ var gold_in_flight: float = 0.0
 
 func _ready() -> void:
 	sim = Game.sim
-	add_theme_stylebox_override("panel", UIKit.style(Color("100c16"), 0, Color.TRANSPARENT, 0, 6))
+	add_theme_stylebox_override("panel", UIKit.style(Color("15100d"), 0, Color.TRANSPARENT, 0, 6))
 	var h := HBoxContainer.new()
 	h.add_theme_constant_override("separation", 18)
 	add_child(h)
@@ -48,6 +51,11 @@ func _ready() -> void:
 	var sp := Control.new()
 	sp.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	h.add_child(sp)
+	story_button = UIKit.button("", func(): story_pressed.emit())
+	story_button.tooltip_text = "A story scene is waiting — click to play it"
+	story_button.add_theme_stylebox_override("normal", UIKit.style(Color("8a5a30"), 5, UIKit.ACCENT, 2, 6))
+	story_button.visible = false
+	h.add_child(story_button)
 	for s in Game.SPEEDS:
 		var label := "⏸" if s == 0.0 else "%d×" % int(s)
 		var b := UIKit.button(label, func(): Game.set_speed(s))
@@ -59,6 +67,14 @@ func _ready() -> void:
 	h.add_child(UIKit.button("🛠 Debug", func(): debug_pressed.emit()))
 	Game.speed_changed.connect(func(_s): _sync_speed())
 	_sync_speed()
+
+
+## Shows "📖 n" while story scenes are waiting; it pulses gently.
+func set_story_count(n: int) -> void:
+	story_button.visible = n > 0
+	if n > 0:
+		story_button.text = "📖 %d" % n
+		story_button.modulate = Color(1, 1, 1, 0.75 + 0.25 * sin(Time.get_ticks_msec() / 250.0))
 
 
 ## Where flying gold should land (global coordinates).

@@ -15,6 +15,7 @@ var expedition: ExpeditionSim
 var restaurant: RestaurantSim
 var economy: Economy
 var progression: Progression
+var story: StoryDirector
 
 
 ## p_legacy (from festival_legacy()) starts a new season that keeps ladles, perks and festival count.
@@ -25,6 +26,7 @@ func _init(p_db: ContentDB, p_state: GameState = null, p_seed: int = -1, p_legac
 	restaurant = RestaurantSim.new(self)
 	economy = Economy.new(self)
 	progression = Progression.new(self)
+	story = StoryDirector.new(self)
 	if p_state == null:
 		_new_game(p_seed, p_legacy)
 	else:
@@ -36,6 +38,7 @@ func _init(p_db: ContentDB, p_state: GameState = null, p_seed: int = -1, p_legac
 		progression.check_floor_unlocks()
 		if state.phase == Phase.NIGHT:
 			restaurant.open()
+	story.refresh()
 
 
 func _new_game(p_seed: int, legacy: Dictionary) -> void:
@@ -48,6 +51,11 @@ func _new_game(p_seed: int, legacy: Dictionary) -> void:
 	state.ladles = int(legacy.get("ladles", 0))
 	state.perks = legacy.get("perks", {}).duplicate()
 	state.festivals = int(legacy.get("festivals", 0))
+	# Story memories carry over between seasons (scenes don't replay); season bonuses don't.
+	var st: Dictionary = legacy.get("story", {}).duplicate(true)
+	st["bonuses"] = {}
+	st["queue"] = []
+	state.story = st
 	state.gold = b.start_gold + perk_amount("start_gold")
 	state.rice_target = b.rice_target
 	state.report = GameState.empty_report()
@@ -99,7 +107,13 @@ func festival_legacy() -> Dictionary:
 	return {
 		"ladles": state.ladles + award, "perks": state.perks.duplicate(),
 		"festivals": state.festivals + 1, "award": award, "run_earned": state.run_earned, "days": state.day,
+		"story": state.story.duplicate(true),
 	}
+
+
+## Season-long bonuses earned through story choices.
+func story_amount(effect: String) -> float:
+	return story.bonus(effect)
 
 
 func perk_amount(effect: String) -> float:
@@ -218,12 +232,12 @@ func fresh_days() -> int:
 
 
 func traffic() -> float:
-	var t := b.base_traffic * (1.0 + state.renown * b.renown_traffic + upgrade_amount("traffic") + perk_amount("traffic"))
+	var t := b.base_traffic * (1.0 + state.renown * b.renown_traffic + upgrade_amount("traffic") + perk_amount("traffic") + story_amount("traffic"))
 	return maxf(b.min_traffic, t)
 
 
 func cook_speed_bonus() -> float:
-	return 1.0 + upgrade_amount("cook_speed")
+	return 1.0 + upgrade_amount("cook_speed") + story_amount("cook_speed")
 
 
 func roster_cap() -> int:

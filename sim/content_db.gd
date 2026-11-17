@@ -11,6 +11,10 @@ var upgrades: Array[UpgradeDef] = []
 var customer_types: Array[CustomerTypeDef] = []
 var perks: Array[PerkDef] = []
 var balance: BalanceConfig
+## Story scenes parsed from res://data/story/*.dlg, by id.
+var scenes: Dictionary = {}
+var scene_errors: Array = []
+var _scene_list: Array = []
 
 var _recipe_list: Array[RecipeDef] = []
 var _ingredient_list: Array[IngredientDef] = []
@@ -37,6 +41,7 @@ static func load_default() -> ContentDB:
 	db.upgrades.sort_custom(func(a, b): return a.sort_order < b.sort_order)
 	db._recipe_list.sort_custom(func(a, b): return a.sort_order < b.sort_order)
 	db._ingredient_list.sort_custom(func(a, b): return a.sort_order < b.sort_order)
+	db._load_scenes("res://data/story")
 	db.balance = load(ROOT + "/balance.tres")
 	if db.balance == null:
 		push_error("balance.tres missing, using defaults")
@@ -57,6 +62,27 @@ static func _load_dir(path: String) -> Array:
 			if res != null:
 				out.append(res)
 	return out
+
+
+func _load_scenes(path: String) -> void:
+	var dir := DirAccess.open(path)
+	if dir == null:
+		return
+	for f in dir.get_files():
+		if not f.ends_with(".dlg"):
+			continue
+		var sc := DialogParser.parse(FileAccess.get_file_as_string(path + "/" + f), f)
+		for e in sc["errors"]:
+			push_error("Story: " + e)
+			scene_errors.append(e)
+		if sc["id"] != "":
+			scenes[sc["id"]] = sc
+	_scene_list = scenes.values()
+	_scene_list.sort_custom(func(a, b): return a["order"] < b["order"])
+
+
+func scene_list() -> Array:
+	return _scene_list
 
 
 func recipe_list() -> Array[RecipeDef]:

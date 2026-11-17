@@ -8,7 +8,7 @@ var _hide_t: float = -1.0
 
 
 func _ready() -> void:
-	add_theme_stylebox_override("panel", UIKit.style(Color("2b2136"), 10, UIKit.ACCENT, 2, 14))
+	add_theme_stylebox_override("panel", UIKit.style(Color("2e221b"), 10, UIKit.ACCENT, 2, 14))
 	custom_minimum_size = Vector2(420, 0)
 	var v := VBoxContainer.new()
 	v.add_theme_constant_override("separation", 4)

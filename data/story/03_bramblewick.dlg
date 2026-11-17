@@ -1,0 +1,30 @@
+# The stall's oldest regular, and the first hint of the tithe.
+@id bramblewick_first
+@title Third Stool from the Left
+@trigger dusk_day 2
+@order 30
+
+== start
+narrator: An old man in a dented breastplate lowers himself onto the end stool, one creak at a time.
+bramblewick (happy): Ah! A new cook. Odessa's stall finally has a heartbeat again.
+bramblewick (neutral): Sir Bramblewick, retired. Third stool from the left. That one's mine.
+bramblewick (sad): My Elsie sold soup at the corner. Glowroot soup, every Lantern Night. Hers tasted like moss after rain.
+* "Tonight's bowl is on the house, Sir."
+  ~ affinity bramblewick +2
+  ~ renown +3
+  bramblewick (surprised): On the house? Well. Well, well.
+  bramblewick (happy): Elsie would have liked you.
+* "Mushroom skewer, full price — extra salt."
+  ~ gold +12
+  bramblewick (happy): Ha! The doctor says easy on the salt. The doctor has never been to a night market.
+* "Did you ever go down into the Hollow?"
+  ~ flag heard_spoons
+  -> hollow
+-> end
+
+== hollow
+bramblewick (neutral): Every year, back then. The tithe parties. Down past the rats and into the Orchard.
+bramblewick (angry): Floor Three's the trouble. The Rat King sits on a heap of stolen spoons like it's a throne.
+bramblewick (sad): We lost good folk on those stairs. A young fellow named Rook, once. Covered his partner's retreat and… well.
+bramblewick (neutral): Ask your cook about it. Or rather — don't.
+-> end

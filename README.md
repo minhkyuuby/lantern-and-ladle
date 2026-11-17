@@ -38,6 +38,16 @@ Launching the game with `-- --festival-now` holds the festival immediately if th
 - **Festival of Lanterns** (prestige, Legacy tab) — after the Hive Queen, end the season: everything resets to day 1 except 🥄 Golden Ladles (5 + √(season earnings / 1000)) and the permanent perks they buy (starting gold, starting levels, faster dives, traffic, XP, dish prices).
 - Parties choose floors with **Auto: deepest safe**, **Auto: restock pantry** (the safe floor whose loot covers what the menu is short of; default for Party B) or a fixed floor.
 
+## Story
+Story scenes live in `data/story/*.dlg` — a small script format (speaker + expression lines,
+`* options`, `~ effects`, `? conditions`, `-> jumps`; the full syntax is in the header of
+`sim/story/dialog_parser.gd`). `StoryDirector` queues scenes when their `@trigger` is met (even
+offline); they open as focused scenes at 1–2× speed or wait behind the 📖 HUD button at higher speeds.
+Choices change affinity, flags and season bonuses. The deep story and choice map are in
+`docs/story_bible.md` §7.
+
+Preview a scene: `godot --path . -- --slot=test --fresh --story=ch1_inheritance`
+
 ## Art
 Placeholder pixel art is drawn in code by `tools/gen_sprites.gd` (characters 16×24, stations 32×20,
 ingredient icons 16×16, story portraits 32×32, all shown at 2×). Edit the script, then regenerate:

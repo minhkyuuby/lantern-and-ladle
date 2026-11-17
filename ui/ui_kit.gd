@@ -2,15 +2,15 @@ class_name UIKit
 extends RefCounted
 ## Small helpers for building the placeholder UI in code.
 
-const BG := Color("17121f")
-const PANEL := Color("261d31")
-const PANEL_LIGHT := Color("352943")
-const ACCENT := Color("f2b45a")
-const TEXT := Color("f3e9dc")
-const MUTED := Color("a99bb5")
-const GOOD := Color("7fd18b")
-const BAD := Color("e2716a")
-const INFO := Color("7fb6e0")
+const BG := Color("1c1411")
+const PANEL := Color("2b201a")
+const PANEL_LIGHT := Color("3a2b22")
+const ACCENT := Color("f2b860")
+const TEXT := Color("f6ead8")
+const MUTED := Color("b8a48e")
+const GOOD := Color("9bcf7a")
+const BAD := Color("e2805f")
+const INFO := Color("8cc4b8")
 
 
 static func label(text: String, size: int = 14, color: Color = TEXT) -> Label:
@@ -82,15 +82,15 @@ static func make_theme() -> Theme:
 	var t := Theme.new()
 	t.default_font_size = 14
 	t.set_color("font_color", "Label", TEXT)
-	t.set_stylebox("normal", "Button", style(Color("4a3a5c"), 5, Color.TRANSPARENT, 0, 6))
-	t.set_stylebox("hover", "Button", style(Color("5c4872"), 5, Color.TRANSPARENT, 0, 6))
-	t.set_stylebox("pressed", "Button", style(Color("7a5a3a"), 5, Color.TRANSPARENT, 0, 6))
-	t.set_stylebox("disabled", "Button", style(Color("2e2638"), 5, Color.TRANSPARENT, 0, 6))
-	t.set_color("font_disabled_color", "Button", Color("6d6278"))
+	t.set_stylebox("normal", "Button", style(Color("5a4130"), 5, Color.TRANSPARENT, 0, 6))
+	t.set_stylebox("hover", "Button", style(Color("6e503a"), 5, Color.TRANSPARENT, 0, 6))
+	t.set_stylebox("pressed", "Button", style(Color("8a6440"), 5, Color.TRANSPARENT, 0, 6))
+	t.set_stylebox("disabled", "Button", style(Color("30241d"), 5, Color.TRANSPARENT, 0, 6))
+	t.set_color("font_disabled_color", "Button", Color("7a6a5c"))
 	t.set_stylebox("panel", "TabContainer", style(PANEL, 6, Color.TRANSPARENT, 0, 6))
 	t.set_stylebox("tab_selected", "TabContainer", style(PANEL, 5, Color.TRANSPARENT, 0, 6))
-	t.set_stylebox("tab_unselected", "TabContainer", style(Color("1e1728"), 5, Color.TRANSPARENT, 0, 6))
-	t.set_stylebox("tab_hovered", "TabContainer", style(Color("2e2439"), 5, Color.TRANSPARENT, 0, 6))
+	t.set_stylebox("tab_unselected", "TabContainer", style(Color("211813"), 5, Color.TRANSPARENT, 0, 6))
+	t.set_stylebox("tab_hovered", "TabContainer", style(Color("33261e"), 5, Color.TRANSPARENT, 0, 6))
 	t.set_font_size("font_size", "TabContainer", 13)
 	return t
 

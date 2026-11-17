@@ -11,7 +11,7 @@ const CORRIDOR_W := 586.0
 
 const RESULT_COLORS := {
 	"win": Color("5f9e5a"), "fail": Color("b0544e"), "forage": Color("4f9a9a"),
-	"treasure": Color("d0a84a"), "boss": Color("b06ad0"), "boss_fail": Color("7a3a5a"),
+	"treasure": Color("d0a84a"), "boss": Color("c08ad0"), "boss_fail": Color("7a3a5a"),
 }
 
 var sim: Sim
@@ -24,7 +24,7 @@ func _ready() -> void:
 	custom_minimum_size = Vector2(W, H)
 	size = Vector2(W, H)
 	clip_contents = true
-	add_child(UIKit.rect(Color("120e18"), Vector2.ZERO, Vector2(W, H)))
+	add_child(UIKit.rect(Color("17110e"), Vector2.ZERO, Vector2(W, H)))
 	header = UIKit.label("", 14, UIKit.ACCENT)
 	header.position = Vector2(12, 6)
 	add_child(header)
@@ -63,7 +63,7 @@ func _rebuild() -> void:
 		var stam_lbl := UIKit.label("stamina", 10, UIKit.MUTED)
 		stam_lbl.position = Vector2(16, 80)
 		root.add_child(stam_lbl)
-		var corridor := UIKit.rect(Color("2a2a22"), Vector2(CORRIDOR_X, 0), Vector2(CORRIDOR_W, 62), 6)
+		var corridor := UIKit.rect(Color("2e2a20"), Vector2(CORRIDOR_X, 0), Vector2(CORRIDOR_W, 62), 6)
 		root.add_child(corridor)
 		var rooms := Control.new()
 		rooms.position = Vector2(CORRIDOR_X, 0)

@@ -1,0 +1,34 @@
+# Brother Tull and the dimming Lantern. Trust him, or poke at the story.
+@id the_dimming
+@title The Dimming
+@trigger dusk_after crown_of_spoons
+@order 60
+
+== start
+narrator: A monk in a lantern-orange robe waits politely at the counter until every customer is served.
+tull (neutral): Forgive the intrusion. Brother Tull, keeper of the Great Lantern.
+tull (sad): Look up. Do you see how it gutters? The Lantern dims a little more every season.
+tull (neutral): The Hollow breathes sick air — from below the Cellars. The old Sunken Orchard.
+tull (neutral): The guild will sell you a permit. It is expensive. Everything worth doing is.
+* "If the town needs light, we'll go."
+  ~ renown +5
+  ~ affinity tull +1
+  tull (happy): Then the Lantern has new friends. I will pray for full pantries.
+* "That sounds like a sales pitch for permits."
+  -> pitch
+? flag find_rook -> rook
+-> end
+
+== pitch
+tull (surprised): Ha! It does, doesn't it.
+tull (sad): The truth is older and less flattering. The temple keeps records of what the Lantern burns.
+tull (neutral): Come back when you've seen the Orchard. Then ask me about the tithe.
+~ flag tithe_hint
+? flag find_rook -> rook
+-> end
+
+== rook
+tull (neutral): One more thing. You are looking for an old adventurer? A man with a scarred hand?
+tull (happy): There is a tea stall two towns over, run by such a man. He hums when the tea is right.
+pip (surprised): HE HUMS?! Maro hums!
+-> end

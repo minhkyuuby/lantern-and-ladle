@@ -1,0 +1,50 @@
+# Maro won't go down. How hard do you push?
+@id maro_floor3
+@title Floor Three
+@trigger floor_unlocked 3
+@order 40
+
+== start
+pip (happy): Floor THREE is open! Maro! You've been to Floor Three, right? What's it like?
+maro (neutral): Loud.
+pip (surprised): That's it?
+maro (sad): Dark. Teeth. A crown made of spoons.
+? flag heard_spoons -> spoons
+-> choice
+
+== spoons
+pip (surprised): Sir Bramblewick said someone named Rook—
+maro (angry): Bramblewick talks too much.
+
+== choice
+* "Maro. What happened down there?"
+  -> push
+* "You don't have to go back. We've got this."
+  ~ affinity maro +1
+  ~ bonus cook_speed +0.05
+  ~ flag protected_maro
+  maro (sad): …
+  maro (happy): Hm. Then there'll be hot soup when you get back. Every time.
+  -> end
+* "Pip — maybe wait before Floor Three."
+  ~ flag pip_waits
+  pip (angry): Wait?! I've been waiting my WHOLE LIFE.
+  maro (neutral): Listen to the boss.
+  pip (sad): …Fine. But only until Gerald's cousins are scared of me.
+  -> end
+
+== push
+? affinity maro >= 2 -> opens
+maro (angry): Some other night.
+narrator: He turns back to the stove. The conversation is over.
+-> end
+
+== opens
+~ flag maro_opened
+maro (sad): Twenty years ago. Four of us. Odessa, Wren, me — and Rook.
+pip (surprised): Wren?! My MUM was in your crew?
+maro (sad): The rats came up the stairs like water. Rook stood his ground and told me to run.
+maro (sad): I ran. I've been running ever since. Up here, where the soup is.
+pip (sad): …
+maro (neutral): Bring everyone home, Pip. That's all I ask.
+-> end

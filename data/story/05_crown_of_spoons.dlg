@@ -1,0 +1,39 @@
+# The Rat King falls — and something comes back up the stairs.
+@id crown_of_spoons
+@title The Crown of Spoons
+@trigger boss_beaten 3
+@order 50
+
+== start
+pip (happy): WE WON! The Rat King is having a very long nap!
+pip (neutral): And — look what he was sitting on. Right at the top of the spoon pile.
+narrator: A dented copper ladle. Two letters scratched into the handle: M & R.
+maro (surprised): …
+? flag maro_opened -> knows
+maro (sad): That's Rook's. My old partner. He dropped it covering me. I thought it was gone for good.
+-> choice
+
+== knows
+maro (sad): Rook's ladle. Twenty years on a rat's throne.
+pip (sad): He stood his ground. Like you said.
+maro (happy): …Yes. Yes, he did.
+
+== choice
+maro (neutral): Hm. Tonight I cook the Feast. My way.
+* "Hang it over the pass. Rook cooks with us now."
+  ~ bonus cook_speed +0.10
+  ~ flag ladle_pass
+  maro (happy): Over the pass. He'd like that. Nosy man — always watching the plates.
+* "It's yours, Maro. Keep it close."
+  ~ affinity maro +2
+  ~ bonus price +0.05
+  maro (sad): …Thank you.
+  maro (happy): Every dish I cook with it gets a little extra care. They'll taste it.
+* "What if Rook made it out?"
+  ~ flag find_rook
+  ~ affinity pip +1
+  pip (surprised): Wait — they never found him, right? So he could be ANYWHERE!
+  maro (neutral): Twenty years, Pip.
+  pip (happy): I've got a compass that points at lost people. I'm just saying.
+narrator: That night the Feast goes out to every stool, and Maro hums the whole time.
+-> end

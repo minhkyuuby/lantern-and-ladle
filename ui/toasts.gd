@@ -9,7 +9,7 @@ func _ready() -> void:
 
 
 func push(text: String) -> void:
-	var p := UIKit.card(Color("3a2d48ee"), 6)
+	var p := UIKit.card(Color("3d2c22ee"), 6)
 	p.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	var l := UIKit.label(text.substr(text.find("]") + 2) if text.begins_with("[D") else text, 13, UIKit.ACCENT)
 	p.add_child(l)

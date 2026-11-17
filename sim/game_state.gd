@@ -34,6 +34,9 @@ var festivals: int = 0
 ## Revenue + tips earned this season (drives the festival's ladle award).
 var run_earned: float = 0.0
 
+## Story progress: seen {id: day}, queue [ids], flags [..], affinity {who: n}, bonuses {effect: x}.
+var story: Dictionary = {}
+
 var report: Dictionary = {}
 var log_lines: Array[String] = []
 var next_id: int = 1
@@ -102,6 +105,7 @@ func to_dict() -> Dictionary:
 		"scrolls": Array(scrolls), "max_floor": max_floor, "floors_cleared": floors_cleared.duplicate(),
 		"slice_complete": slice_complete, "bosses_beaten": Array(bosses_beaten), "rice_target": rice_target,
 		"ladles": ladles, "perks": perks.duplicate(), "festivals": festivals, "run_earned": run_earned,
+		"story": story.duplicate(true),
 		"report": report.duplicate(), "log_lines": Array(log_lines.slice(-60)),
 		"next_id": next_id, "rng_seed": str(rng_seed), "rng_state": str(rng_state),
 	}
@@ -147,6 +151,8 @@ static func from_dict(d: Dictionary) -> GameState:
 		s.perks[str(k)] = int(d["perks"][k])
 	s.festivals = int(d.get("festivals", 0))
 	s.run_earned = float(d.get("run_earned", 0.0))
+	var st = d.get("story", {})
+	s.story = st.duplicate(true) if typeof(st) == TYPE_DICTIONARY else {}
 	s.report = empty_report()
 	var rep: Dictionary = d.get("report", {})
 	for k in rep:

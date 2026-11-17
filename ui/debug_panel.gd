@@ -5,7 +5,7 @@ signal report_ready(title: String, lines: Array)
 
 
 func _ready() -> void:
-	add_theme_stylebox_override("panel", UIKit.style(Color("1d1626f5"), 8, UIKit.INFO, 2, 10))
+	add_theme_stylebox_override("panel", UIKit.style(Color("211812f5"), 8, UIKit.INFO, 2, 10))
 	var v := VBoxContainer.new()
 	add_child(v)
 	v.add_child(UIKit.label("🛠 Debug (F1)", 15, UIKit.INFO))

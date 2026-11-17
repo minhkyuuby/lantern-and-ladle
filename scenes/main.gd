@@ -9,6 +9,8 @@ var ledger: LedgerPopup
 var toasts: Toasts
 var debug: DebugPanel
 var fx: Control
+var dialog: DialogScene
+var _story_wait: float = 0.0
 
 
 func _ready() -> void:
@@ -65,6 +67,16 @@ func _ready() -> void:
 	debug.report_ready.connect(func(t, lines): ledger.show_report(t, lines, 15.0))
 	hud.debug_pressed.connect(func(): debug.visible = not debug.visible)
 
+	# Story scenes sit above everything else.
+	dialog = DialogScene.new()
+	add_child(dialog)
+	hud.story_pressed.connect(_open_next_story)
+	var forced := Game.arg("story")  # test hook: --story=SCENE_ID [--story-advance=N]
+	if forced != "":
+		(func():
+			dialog.open(forced)
+			dialog.debug_advance(int(Game.arg("story-advance")))).call_deferred()
+
 	var ev := Game.sim.events
 	ev.day_ended.connect(_on_day_ended)
 	ev.logged.connect(func(line: String, important: bool):
@@ -109,6 +121,29 @@ func _fly_gold(start: Vector2, box: Vector2, amount: float) -> void:
 		hud.gold_in_flight = maxf(0.0, hud.gold_in_flight - amount)
 		hud.pulse_gold())
 	tw.tween_callback(l.queue_free)
+
+
+## Waiting scenes open on their own at 1–2× (after a short beat); at faster speeds, or while
+## paused, they wait behind the 📖 button so idle play is never interrupted.
+func _process(delta: float) -> void:
+	var q := Game.sim.story.queue()
+	hud.set_story_count(0 if dialog.is_open() else q.size())
+	if dialog.is_open() or q.is_empty() or Game.catching_up or ledger.visible:
+		_story_wait = 0.0
+		return
+	if Game.time_scale > 0.0 and Game.time_scale <= 2.0:
+		_story_wait += delta
+		if _story_wait >= 0.8:
+			_story_wait = 0.0
+			_open_next_story()
+
+
+func _open_next_story() -> void:
+	var q := Game.sim.story.queue()
+	if dialog.is_open() or q.is_empty():
+		return
+	if not dialog.open(q[0]):
+		Game.sim.story.finish(q[0])  # unknown scene id (e.g. removed file): drop it
 
 
 func _add_tab(node: Control, title: String) -> void:
