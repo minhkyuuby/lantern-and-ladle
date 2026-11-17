@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/defs/recipe_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "slime_jelly"
+display_name = "Slime Jelly Cup"
+icon = "🍮"
+ingredients = {"slime": 2}
+station = "pot"
+cook_time = 6.0
+price = 18
+chef_level = 2
+needs_scroll = false
+scroll_hint = ""
+tags = Array[String](["sweet", "fancy"])
+xp = 3
+appeal = 1.0
+sort_order = 4

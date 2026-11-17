@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/defs/recipe_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "rice_bowl"
+display_name = "Plain Rice Bowl"
+icon = "🍚"
+ingredients = {"rice": 1}
+station = "pot"
+cook_time = 4.0
+price = 4
+chef_level = 1
+needs_scroll = false
+scroll_hint = ""
+tags = Array[String](["cheap"])
+xp = 1
+appeal = 0.35
+sort_order = 0

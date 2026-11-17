@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="PerkDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/defs/perk_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "guild_mentors"
+display_name = "Guild Mentors"
+icon = "🎓"
+description = "+15% XP for the whole crew, forever."
+effect = "xp"
+amount = 0.15
+base_cost = 3
+cost_step = 2
+max_level = 5
+sort_order = 5

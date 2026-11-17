@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="FloorDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/defs/floor_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+index = 1
+display_name = "Damp Steps"
+color = Color(0.239, 0.290, 0.208, 1)
+duration = 60.0
+rooms = 4
+danger = 3.0
+loot = {"mushroom": 5, "rat_meat": 3, "moss": 2}
+loot_per_success = Vector2i(1, 2)
+xp_per_room = 3
+clears_to_unlock = 5
+biome = "Mossy Cellars"

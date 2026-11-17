@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="UpgradeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/defs/upgrade_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "extra_seat"
+display_name = "Extra Stool"
+icon = "🪑"
+description = "One more seat at the counter."
+effect = "seats"
+amount = 1.0
+base_cost = 60
+cost_mult = 1.75
+max_level = 5
+min_renown = 0
+requires_boss = 0
+sort_order = 0

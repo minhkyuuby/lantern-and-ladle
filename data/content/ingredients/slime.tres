@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="IngredientDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/defs/ingredient_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "slime"
+display_name = "Slime Jelly"
+icon = "🟢"
+color = Color(0.498, 0.820, 0.545, 1)
+source = "dungeon"
+market_price = 0
+spoils = true
+sort_order = 4

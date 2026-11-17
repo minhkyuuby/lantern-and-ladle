@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="IngredientDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/defs/ingredient_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "royal_jelly"
+display_name = "Royal Jelly"
+icon = "🌟"
+color = Color(0.965, 0.878, 0.541, 1)
+source = "dungeon"
+market_price = 0
+spoils = true
+sort_order = 11

@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/defs/recipe_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "lantern_tart"
+display_name = "Lantern-Fruit Tart"
+icon = "🥧"
+ingredients = {"lantern_fruit": 2, "honey": 1}
+station = "oven"
+cook_time = 9.0
+price = 64
+chef_level = 6
+needs_scroll = true
+scroll_hint = "Treasure rooms on Floor 5"
+tags = Array[String](["sweet", "fancy"])
+xp = 8
+appeal = 1.3
+sort_order = 10

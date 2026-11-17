@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="FloorDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/defs/floor_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+index = 6
+display_name = "Hive Queen's Court"
+color = Color(0.290, 0.188, 0.063, 1)
+duration = 240.0
+rooms = 8
+danger = 80.0
+loot = {"boar": 4, "honey": 3, "lantern_fruit": 3}
+loot_per_success = Vector2i(3, 4)
+xp_per_room = 28
+boss_name = "The Hive Queen"
+boss_danger_mult = 3.0
+boss_after_clears = 8
+boss_loot = {"royal_jelly": 2}
+boss_scroll = "hive_banquet"
+biome = "Sunken Orchard"

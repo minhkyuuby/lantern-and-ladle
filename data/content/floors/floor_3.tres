@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="FloorDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/defs/floor_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+index = 3
+display_name = "Rat King's Hall"
+color = Color(0.290, 0.165, 0.208, 1)
+duration = 180.0
+rooms = 8
+danger = 34.0
+loot = {"rat_meat": 4, "slime": 3, "glowroot": 2, "moss": 2}
+loot_per_success = Vector2i(2, 3)
+xp_per_room = 10
+boss_name = "The Rat King"
+boss_danger_mult = 3.0
+boss_after_clears = 8
+boss_loot = {"rat_king_haunch": 2}
+boss_scroll = "cellar_feast"
+biome = "Mossy Cellars"

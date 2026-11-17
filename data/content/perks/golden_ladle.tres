@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="PerkDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/defs/perk_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "golden_ladle"
+display_name = "Golden Ladle"
+icon = "🥄"
+description = "+10% dish prices, forever."
+effect = "price"
+amount = 0.1
+base_cost = 3
+cost_step = 2
+max_level = 5
+sort_order = 6

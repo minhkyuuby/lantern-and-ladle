@@ -1,0 +1,14 @@
+# Godot 4 cache / import data (regenerated on open)
+.godot/
+/android/
+
+# Export output
+build/
+*.exe
+*.pck
+*.zip
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+*.tmp

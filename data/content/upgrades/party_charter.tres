@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="UpgradeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/defs/upgrade_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "party_charter"
+display_name = "Second Party Charter"
+icon = "📜"
+description = "Run a second adventuring party."
+effect = "party"
+amount = 1.0
+base_cost = 700
+cost_mult = 2.0
+max_level = 1
+min_renown = 25
+requires_boss = 0
+sort_order = 7

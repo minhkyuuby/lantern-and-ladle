@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="PerkDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/defs/perk_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "nest_egg"
+display_name = "Nest Egg"
+icon = "💰"
+description = "Start each season with +200 gold."
+effect = "start_gold"
+amount = 200.0
+base_cost = 1
+cost_step = 1
+max_level = 5
+sort_order = 0

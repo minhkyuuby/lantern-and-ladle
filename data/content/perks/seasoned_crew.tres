@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="PerkDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/defs/perk_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "seasoned_crew"
+display_name = "Seasoned Crew"
+icon = "🗡"
+description = "Pip starts each season two levels higher."
+effect = "adv_levels"
+amount = 2.0
+base_cost = 2
+cost_step = 2
+max_level = 4
+sort_order = 2

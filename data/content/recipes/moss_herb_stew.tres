@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/defs/recipe_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "moss_herb_stew"
+display_name = "Moss-Herb Stew"
+icon = "🥘"
+ingredients = {"rat_meat": 1, "moss": 2, "glowroot": 1}
+station = "pot"
+cook_time = 10.0
+price = 36
+chef_level = 3
+needs_scroll = true
+scroll_hint = "Treasure rooms on Floor 2"
+tags = Array[String](["hearty", "meat", "fancy"])
+xp = 6
+appeal = 1.2
+sort_order = 5

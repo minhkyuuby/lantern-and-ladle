@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="CustomerTypeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/defs/customer_type_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "adventurer"
+display_name = "Adventurer"
+icon = "🧝"
+color = Color(0.788, 0.561, 0.416, 1)
+weight = 3.0
+min_renown = 8
+patience = 30.0
+prefers = Array[String](["meat", "hearty"])
+price_mult = 1.1
+tip_mult = 1.5
+renown_gain = 1.5
+min_quality = 0

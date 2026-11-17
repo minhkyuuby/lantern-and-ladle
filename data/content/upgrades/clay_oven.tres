@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="UpgradeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/defs/upgrade_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "clay_oven"
+display_name = "Clay Oven"
+icon = "🧱"
+description = "An oven for cakes, tarts and banquets. Second level adds another oven."
+effect = "oven"
+amount = 1.0
+base_cost = 1500
+cost_mult = 2.0
+max_level = 2
+min_renown = 0
+requires_boss = 3
+sort_order = 9

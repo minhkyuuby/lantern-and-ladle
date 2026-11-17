@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="FloorDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/defs/floor_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+index = 2
+display_name = "Glowroot Tunnels"
+color = Color(0.290, 0.239, 0.165, 1)
+duration = 120.0
+rooms = 6
+danger = 16.0
+loot = {"glowroot": 4, "slime": 3, "mushroom": 2, "rat_meat": 2, "moss": 2}
+loot_per_success = Vector2i(1, 3)
+xp_per_room = 6
+clears_to_unlock = 12
+scroll_recipe = "moss_herb_stew"
+scroll_chance = 0.2
+biome = "Mossy Cellars"

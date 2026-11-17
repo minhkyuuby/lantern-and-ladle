@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="FloorDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/defs/floor_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+index = 5
+display_name = "Beehive Groves"
+color = Color(0.290, 0.259, 0.125, 1)
+duration = 200.0
+rooms = 7
+danger = 60.0
+loot = {"honey": 4, "lantern_fruit": 3, "boar": 3, "blossom": 2}
+loot_per_success = Vector2i(2, 4)
+xp_per_room = 20
+clears_to_unlock = 10
+scroll_recipe = "lantern_tart"
+scroll_chance = 0.2
+biome = "Sunken Orchard"

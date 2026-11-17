@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/defs/recipe_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "boar_skewer"
+display_name = "Honey-Glazed Boar"
+icon = "🍡"
+ingredients = {"boar": 1, "honey": 1}
+station = "grill"
+cook_time = 8.0
+price = 44
+chef_level = 5
+needs_scroll = false
+scroll_hint = ""
+tags = Array[String](["meat", "hearty"])
+xp = 6
+appeal = 1.1
+sort_order = 8

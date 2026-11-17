@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/defs/recipe_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "hive_banquet"
+display_name = "Hive Queen's Banquet"
+icon = "🎂"
+ingredients = {"royal_jelly": 1, "lantern_fruit": 2, "boar": 1}
+station = "oven"
+cook_time = 16.0
+price = 240
+chef_level = 8
+needs_scroll = true
+scroll_hint = "Defeat the Hive Queen (Floor 6)"
+tags = Array[String](["fancy", "sweet", "meat"])
+xp = 20
+appeal = 1.6
+sort_order = 11

@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/defs/recipe_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "cellar_feast"
+display_name = "Rat King's Feast"
+icon = "🍱"
+ingredients = {"rat_king_haunch": 1, "rat_meat": 2, "glowroot": 1}
+station = "grill"
+cook_time = 14.0
+price = 95
+chef_level = 4
+needs_scroll = true
+scroll_hint = "Defeat the Rat King (Floor 3)"
+tags = Array[String](["fancy", "meat", "hearty"])
+xp = 12
+appeal = 1.5
+sort_order = 6
