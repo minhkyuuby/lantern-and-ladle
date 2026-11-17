@@ -38,6 +38,15 @@ Launching the game with `-- --festival-now` holds the festival immediately if th
 - **Festival of Lanterns** (prestige, Legacy tab) — after the Hive Queen, end the season: everything resets to day 1 except 🥄 Golden Ladles (5 + √(season earnings / 1000)) and the permanent perks they buy (starting gold, starting levels, faster dives, traffic, XP, dish prices).
 - Parties choose floors with **Auto: deepest safe**, **Auto: restock pantry** (the safe floor whose loot covers what the menu is short of; default for Party B) or a fixed floor.
 
+## Art
+Placeholder pixel art is drawn in code by `tools/gen_sprites.gd` (characters 16×24, stations 32×20,
+ingredient icons 16×16, story portraits 32×32, all shown at 2×). Edit the script, then regenerate:
+```bash
+godot --headless --path . --script res://tools/gen_sprites.gd
+godot --headless --path . --import
+```
+`docs/sprites_preview.png` is a 4× contact sheet of everything. Anything without a sprite falls back to its emoji.
+
 ## Layout
 - `sim/` — pure simulation (no nodes): `Sim` clock + `ExpeditionSim`, `RestaurantSim`, `Economy`, `Progression`; `GameState` is everything that gets saved.
 - `data/defs/` — Resource classes; `data/content/` — the actual ingredients, recipes, floors, upgrades, customers and `balance.tres` (all tunable numbers). Edit them in the inspector.

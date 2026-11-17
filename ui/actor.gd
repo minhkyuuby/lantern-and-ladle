@@ -17,15 +17,24 @@ var _tween: Tween
 var _walking: bool = false
 
 
-func setup(icon_text: String, color: Color, caption_text: String = "", size_px: Vector2 = Vector2(38, 50)) -> Actor:
+## With `sprite`, the pixel-art character replaces the coloured body + emoji face.
+func setup(icon_text: String, color: Color, caption_text: String = "", size_px: Vector2 = Vector2(38, 50), sprite: Texture2D = null) -> Actor:
 	size = size_px
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
-	body = UIKit.rect(color, Vector2.ZERO, size_px, 12)
-	add_child(body)
+	if sprite:
+		body = UIKit.rect(Color(0, 0, 0, 0.3), Vector2(5, size_px.y - 5), Vector2(size_px.x - 10, 6), 3)  # ground shadow
+		add_child(body)
+		var pic := SpriteLib.view(sprite, SpriteLib.CHAR_SCALE)
+		pic.position = Vector2((size_px.x - pic.size.x) / 2.0, size_px.y - pic.size.y)
+		add_child(pic)
+	else:
+		body = UIKit.rect(color, Vector2.ZERO, size_px, 12)
+		add_child(body)
 	face = UIKit.label(icon_text, int(size_px.x * 0.5))
 	face.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	face.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	face.size = Vector2(size_px.x, size_px.y * 0.75)
+	face.visible = sprite == null
 	add_child(face)
 	caption = UIKit.label(caption_text, 10, UIKit.TEXT)
 	caption.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER

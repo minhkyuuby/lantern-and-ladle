@@ -22,7 +22,12 @@ func build() -> void:
 		any = true
 		var v := card()
 		var h := row()
-		h.add_child(UIKit.label("%s %s" % [def.icon, def.display_name], 14))
+		var tex := SpriteLib.ingredient(def.id)
+		if tex:
+			h.add_child(SpriteLib.view(tex, 2))
+			h.add_child(UIKit.label(def.display_name, 14))
+		else:
+			h.add_child(UIKit.label("%s %s" % [def.icon, def.display_name], 14))
 		h.add_child(spacer())
 		h.add_child(UIKit.label("×%d" % n, 15, UIKit.ACCENT))
 		v.add_child(h)

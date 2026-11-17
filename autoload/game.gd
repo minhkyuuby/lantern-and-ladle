@@ -2,6 +2,7 @@ extends Node
 ## Owns the live Sim, drives it from real time, autosaves, and handles offline catch-up.
 ## User args (after `--`): --fresh  --speed=10  --shot=/path.png  --shot-after=8  --quit-after-shot
 ##                        --tab=N  --festival-now (holds the festival on load if allowed)
+##                        --slot=NAME  use user://save_NAME.json instead of the player's save
 
 signal resynced
 signal speed_changed(scale: float)
@@ -34,6 +35,7 @@ func _ready() -> void:
 	_args = _parse_args()
 	get_tree().set_auto_accept_quit(false)
 	db = ContentDB.load_default()
+	SaveSystem.use_slot(str(_args.get("slot", "")))
 	if _args.has("fresh"):
 		SaveSystem.delete_save()
 	_start()

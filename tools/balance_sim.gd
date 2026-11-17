@@ -3,6 +3,7 @@ extends SceneTree
 ##   godot --headless --path . --script res://tools/balance_sim.gd -- --days=30 [--idle] [--seed=7] [--save]
 ##   ... -- --seasons=4 [--days=80]   bot holds the festival after each Hive Queen, buys perks, plays on
 ## --save writes the final state to the game's save slot, handy for testing late-game screens.
+## --slot=NAME saves to user://save_NAME.json instead (launch the game with the same --slot=NAME).
 ## Default uses a simple "player bot" that hires and buys upgrades; --idle never touches anything.
 
 var sim: Sim
@@ -20,6 +21,8 @@ func _init() -> void:
 			seed = int(a.get_slice("=", 1))
 		elif a == "--idle":
 			bot = false
+		elif a.begins_with("--slot="):
+			SaveSystem.use_slot(a.get_slice("=", 1))
 	for a in OS.get_cmdline_user_args():
 		if a.begins_with("--seasons="):
 			_run_seasons(int(a.get_slice("=", 1)), days, seed)
@@ -45,7 +48,7 @@ func _init() -> void:
 	print("\nfinished: slice_complete=%s hours_played=%.2f" % [sim.state.slice_complete, sim.state.time_total / 3600.0])
 	if "--save" in OS.get_cmdline_user_args():
 		SaveSystem.save(sim.state)
-		print("saved to ", ProjectSettings.globalize_path(SaveSystem.PATH))
+		print("saved to ", ProjectSettings.globalize_path(SaveSystem.path))
 	quit()
 
 

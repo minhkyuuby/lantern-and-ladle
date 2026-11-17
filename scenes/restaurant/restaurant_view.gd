@@ -144,17 +144,26 @@ func _sync_layout() -> void:
 			if ev is InputEventMouseButton and ev.pressed and ev.button_index == MOUSE_BUTTON_LEFT:
 				sim.restaurant.boost_station(i))
 		add_child(panel)
+		var idle_tex := SpriteLib.get_tex("stations/%s_idle" % st.type)
+		var cook_tex := SpriteLib.get_tex("stations/%s_cook" % st.type)
+		var pic: TextureRect = null
+		if idle_tex:
+			pic = SpriteLib.view(idle_tex, 2)
+			pic.position = Vector2((STATION_SIZE.x - pic.size.x) / 2.0, STATION_SIZE.y - 12 - pic.size.y + 2)
+			panel.add_child(pic)
 		var lbl := UIKit.label(look[0], 13)
-		lbl.position = Vector2(6, 6)
+		lbl.position = Vector2(6, 2)
+		lbl.add_theme_color_override("font_outline_color", Color(0, 0, 0, 0.7))
+		lbl.add_theme_constant_override("outline_size", 3)
 		panel.add_child(lbl)
-		var dish := UIKit.label("", 22)
-		dish.position = Vector2(48, 26)
+		var dish := UIKit.label("", 16)
+		dish.position = Vector2(60, 0)
 		panel.add_child(dish)
 		var b := UIKit.bar(UIKit.ACCENT, 6)
 		b.position = Vector2(6, STATION_SIZE.y - 12)
 		b.size = Vector2(STATION_SIZE.x - 12, 6)
 		panel.add_child(b)
-		station_views.append({"panel": panel, "bar": b, "dish": dish, "style": sty})
+		station_views.append({"panel": panel, "bar": b, "dish": dish, "style": sty, "pic": pic, "idle": idle_tex, "cook": cook_tex})
 	var lv := sim.state.upgrade_level("lanterns")
 	lantern_label.text = "  ".join(PackedStringArray(range(3 + lv * 2).map(func(_i): return "🏮")))
 
@@ -175,7 +184,7 @@ func _sync_staff() -> void:
 		keep[c.id] = true
 		if not staff_actors.has(c.id):
 			var col := Color("e0c08a") if c.role == Character.CHEF else Color("8ac0e0")
-			var a := Actor.new().setup(c.icon(), col, c.name)
+			var a := Actor.new().setup(c.icon(), col, c.name, Vector2(38, 50), SpriteLib.crew(c))
 			add_child(a)
 			staff_actors[c.id] = a
 			a.position = _idle_pos(c)
@@ -208,7 +217,7 @@ func _queue_pos(i: int) -> Vector2:
 
 func _make_customer(c: RestaurantSim.Customer) -> Actor:
 	# No caption: icon + colour identify the type, the tooltip names it.
-	var a := Actor.new().setup(c.type.icon, c.type.color, "")
+	var a := Actor.new().setup(c.type.icon, c.type.color, "", Vector2(38, 50), SpriteLib.customer(c.type.id))
 	a.make_clickable()
 	a.tooltip_text = "%s — click to hand over a ready dish" % c.type.display_name
 	var cid := c.id
@@ -368,6 +377,8 @@ func _process(_delta: float) -> void:
 		var v: Dictionary = station_views[i]
 		v["bar"].value = (st.job.progress / st.job.recipe.cook_time) if st.job else 0.0
 		v["dish"].text = st.job.recipe.icon if st.job else ""
+		if v["pic"]:
+			v["pic"].texture = v["cook"] if st.job and v["cook"] else v["idle"]
 		var sty: StyleBoxFlat = v["style"]
 		sty.set_border_width_all(3 if st.boost > 0.0 else 0)
 		v["panel"].modulate = Color(1, 1, 1, 1) if st.cooldown <= 0.0 or st.boost > 0.0 else Color(0.8, 0.8, 0.8, 1)
